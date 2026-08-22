@@ -38,10 +38,10 @@ class Tayama(commands.Cog):
 
     @app_commands.command(name="pausa", description="Faz uma pausa rápida atrás do supermercado com a Tayama.")
     async def pausa(self, interaction: discord.Interaction):
-        quote = random.choice(self.quotes)
+        quotes = random.choice(self.quotes)
         embed = discord.Embed(
             title="Área de Fumantes / Pausa 🚬",
-            description=f"*{quote}*",
+            description=quotes,
             color=discord.Color.from_rgb(45, 52, 54)
         )
         if self.bot.user.display_avatar:

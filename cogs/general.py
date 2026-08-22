@@ -31,7 +31,9 @@ class General(commands.Cog):
             value=(
                 "`/materias` — Lista todas as matérias globais e horários.\n"
                 "`/aulas_hoje` — Grade de aulas de um dia da semana.\n"
-                "`/disciplina` — Detalhes completos de uma matéria (ementa, notas, frequência)."
+                "`/disciplina` — Detalhes completos de uma matéria.\n"
+                "`/adicionar_dp` — Puxa uma matéria de outro semestre pra sua grade.\n"
+                "`/remover_materia` — Esconde uma matéria que você não cursa (dispensa)."
             ),
             inline=False,
         )

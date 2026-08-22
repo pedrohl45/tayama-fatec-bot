@@ -214,7 +214,7 @@ class GestaoPessoalMySQL(commands.Cog):
     # ─────────────────────────────────────────
     # /adicionar_materia
     # ─────────────────────────────────────────
-    @app_commands.command(name="adicionar_materia", description="Adiciona uma nova matéria à grade do seu semestre atual.")
+    @app_commands.command(name="adicionar_materia", description="Adiciona uma matéria que NÃO EXISTE na FATEC à sua grade (criação manual).")
     async def adicionar_materia(self, interaction: discord.Interaction):
         discord_id = str(interaction.user.id)
         aluno = await get_aluno(discord_id)
@@ -227,6 +227,84 @@ class GestaoPessoalMySQL(commands.Cog):
         curso = aluno.get("curso", "DSM")
         
         await interaction.response.send_modal(AdicionarMateriaModal(semestre, curso))
+
+
+    # ─────────────────────────────────────────
+    # /adicionar_dp
+    # ─────────────────────────────────────────
+    @app_commands.command(name="adicionar_dp", description="Adiciona uma matéria de outro semestre na sua grade atual (DP ou adiantamento).")
+    @app_commands.autocomplete(codigo_disciplina=disciplina_autocomplete)
+    async def adicionar_dp(self, interaction: discord.Interaction, codigo_disciplina: str):
+        await interaction.response.defer(ephemeral=True)
+        discord_id = str(interaction.user.id)
+        aluno = await get_aluno(discord_id)
+        if not aluno:
+            await interaction.followup.send("Use `/perfil_setup` primeiro.", ephemeral=True)
+            return
+            
+        import json
+        dps_str = aluno.get("dps")
+        dps = json.loads(dps_str) if isinstance(dps_str, str) and dps_str.startswith("[") else []
+        
+        if codigo_disciplina not in dps:
+            dps.append(codigo_disciplina)
+            
+        await upsert_aluno(discord_id, {"dps": json.dumps(dps)})
+        
+        embed = discord.Embed(
+            title="📚 Matéria Extra Adicionada!",
+            description=f"A disciplina `{codigo_disciplina}` foi adicionada à sua grade. Ela aparecerá no seu boletim e aulas.",
+            color=discord.Color.from_str("#c82245")
+        )
+        await interaction.followup.send(embed=embed)
+
+
+    async def minhas_disciplinas_autocomplete(self, interaction: discord.Interaction, current: str) -> list[app_commands.Choice[str]]:
+        from services.fatec_service import get_todas_disciplinas
+        disciplinas = await get_todas_disciplinas(interaction.user.id)
+        choices = []
+        for d in disciplinas:
+            nome = f"{d.get('codigo')} - {d.get('nome')}"
+            if current.lower() in nome.lower():
+                choices.append(app_commands.Choice(name=nome[:100], value=d.get("codigo")))
+            if len(choices) >= 25: break
+        return choices
+
+    # ─────────────────────────────────────────
+    # /remover_materia
+    # ─────────────────────────────────────────
+    @app_commands.command(name="remover_materia", description="Remove/oculta uma matéria do seu boletim e calendário.")
+    @app_commands.autocomplete(codigo_disciplina=minhas_disciplinas_autocomplete)
+    async def remover_materia(self, interaction: discord.Interaction, codigo_disciplina: str):
+        await interaction.response.defer(ephemeral=True)
+        discord_id = str(interaction.user.id)
+        aluno = await get_aluno(discord_id)
+        if not aluno:
+            await interaction.followup.send("Use `/perfil_setup` primeiro.", ephemeral=True)
+            return
+            
+        import json
+        ocultas_str = aluno.get("ocultas")
+        ocultas = json.loads(ocultas_str) if isinstance(ocultas_str, str) and ocultas_str.startswith("[") else []
+        
+        # Se for uma DP, remove dos DPs em vez de por nas ocultas
+        dps_str = aluno.get("dps")
+        dps = json.loads(dps_str) if isinstance(dps_str, str) and dps_str.startswith("[") else []
+        if codigo_disciplina in dps:
+            dps.remove(codigo_disciplina)
+            await upsert_aluno(discord_id, {"dps": json.dumps(dps)})
+        else:
+            if codigo_disciplina not in ocultas:
+                ocultas.append(codigo_disciplina)
+            await upsert_aluno(discord_id, {"ocultas": json.dumps(ocultas)})
+            
+        embed = discord.Embed(
+            title="🗑️ Matéria Removida!",
+            description=f"A disciplina `{codigo_disciplina}` não aparecerá mais no seu calendário.",
+            color=discord.Color.from_str("#c82245")
+        )
+        await interaction.followup.send(embed=embed)
+
 
 
 class AdicionarMateriaModal(discord.ui.Modal, title="Adicionar Matéria"):

@@ -30,8 +30,8 @@ class TutorialView(discord.ui.View):
             inline=False
         )
         embed.add_field(
-            name="3. Minhas matérias não aparecem?",
-            value="Se a sua grade está vazia, use o comando `/adicionar_materia` para cadastrar as disciplinas do seu semestre. Assim todos da sua turma também terão acesso!",
+            name="3. Pegou DP ou Dispensou matéria?",
+            value="Use o comando `/adicionar_dp` para puxar matérias de outros semestres para o seu perfil. Para esconder as que você não faz, use `/remover_materia`.",
             inline=False
         )
         embed.set_footer(text="Clique em 'Próximo' para ver como lançar faltas e notas.")

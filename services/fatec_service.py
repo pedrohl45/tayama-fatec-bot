@@ -35,19 +35,39 @@ async def get_aulas_do_dia(dia: str, discord_id: int = None) -> list[dict]:
     semestre_aluno = 1
     curso_aluno = "Desenvolvimento de Software Multiplataforma (DSM)"
     
+    aluno = {}
     if discord_id:
-        aluno = await get_aluno(str(discord_id))
-        if aluno:
-            semestre_aluno = aluno.get("semestre", 1)
-            curso_aluno = aluno.get("curso", curso_aluno)
+        aluno = await get_aluno(str(discord_id)) or {}
+        
+    semestre_aluno = aluno.get("semestre", 1)
+    curso_aluno = aluno.get("curso", "DSM")
+    # Tenta ler campos JSON do MySQL se existirem. Se for string vazia ou nula, usa lista vazia
+    import json
+    dps_str = aluno.get("dps", "[]")
+    ocultas_str = aluno.get("ocultas", "[]")
+    dps = json.loads(dps_str) if isinstance(dps_str, str) and dps_str.startswith("[") else []
+    ocultas = json.loads(ocultas_str) if isinstance(ocultas_str, str) and ocultas_str.startswith("[") else []
 
     resultado: list[dict] = []
 
     for disc in dados.get("disciplinas", []):
-        # Checa se a disciplina é da grade deste aluno
+        codigo = disc.get("codigo", "?")
         d_semestre = disc.get("semestre", 1)
-        d_curso = disc.get("curso", curso_aluno)
-        if str(d_semestre) != str(semestre_aluno) or d_curso != curso_aluno:
+        d_curso = disc.get("curso", "DSM")
+        
+        # Verifica se o curso bate (suporta "DSM" in "Desenvolvimento de... (DSM)")
+        if d_curso not in curso_aluno and curso_aluno not in d_curso:
+            continue
+            
+        # Pula se foi removida pelo aluno
+        if codigo in ocultas:
+            continue
+            
+        # Inclui se for do semestre atual OU se for uma DP adicionada
+        is_grade_regular = str(d_semestre) == str(semestre_aluno)
+        is_dp = codigo in dps
+        
+        if not (is_grade_regular or is_dp):
             continue
 
         for horario in disc.get("horarios", []):
@@ -55,7 +75,7 @@ async def get_aulas_do_dia(dia: str, discord_id: int = None) -> list[dict]:
                 profs = disc.get("professores", [])
                 professor = profs[0].get("nome", "A definir") if profs else "A definir"
                 resultado.append({
-                    "codigo": disc.get("codigo", "?"),
+                    "codigo": codigo,
                     "nome": disc.get("nome", "?"),
                     "inicio": horario.get("inicio", "?"),
                     "fim": horario.get("fim", "?"),
@@ -71,9 +91,15 @@ async def get_todas_disciplinas(discord_id: int) -> list[dict]:
     """Retorna a lista completa de disciplinas do semestre do aluno com o desempenho do MySQL."""
     dados = await carregar_dados()
     
-    aluno = await get_aluno(str(discord_id))
-    semestre_aluno = aluno.get("semestre", 1) if aluno else 1
-    curso_aluno = aluno.get("curso", "Desenvolvimento de Software Multiplataforma (DSM)") if aluno else "DSM"
+    aluno = await get_aluno(str(discord_id)) or {}
+    semestre_aluno = aluno.get("semestre", 1)
+    curso_aluno = aluno.get("curso", "DSM")
+    
+    import json
+    dps_str = aluno.get("dps", "[]")
+    ocultas_str = aluno.get("ocultas", "[]")
+    dps = json.loads(dps_str) if isinstance(dps_str, str) and dps_str.startswith("[") else []
+    ocultas = json.loads(ocultas_str) if isinstance(ocultas_str, str) and ocultas_str.startswith("[") else []
 
     # Busca notas do MySQL e transforma em dicionário indexado pelo código
     notas_lista = await get_notas(str(discord_id))
@@ -82,9 +108,20 @@ async def get_todas_disciplinas(discord_id: int) -> list[dict]:
     disciplinas = []
     
     for disc in dados.get("disciplinas", []):
+        codigo = disc.get("codigo")
         d_semestre = disc.get("semestre", 1)
         d_curso = disc.get("curso", "DSM")
-        if str(d_semestre) != str(semestre_aluno):
+        
+        if d_curso not in curso_aluno and curso_aluno not in d_curso:
+            continue
+            
+        if codigo in ocultas:
+            continue
+            
+        is_grade_regular = str(d_semestre) == str(semestre_aluno)
+        is_dp = codigo in dps
+        
+        if not (is_grade_regular or is_dp):
             continue
 
         codigo = disc.get("codigo")

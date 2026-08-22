@@ -54,3 +54,4 @@ with open("database/tayama_content.json", "w", encoding="utf-8") as f:
     json.dump(conteudo, f, ensure_ascii=False, indent=4)
 
 print("Banco da Tayama gerado com sucesso!")
+

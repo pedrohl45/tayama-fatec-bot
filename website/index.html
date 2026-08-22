@@ -21,7 +21,7 @@
 
     <!-- CABEÇALHO GLOBAL -->
     <header class="header">
-        <a href="#" onclick="showPage('home')" class="logo">
+        <a href="/" onclick="showPage(event, 'home')" class="logo">
             <i data-lucide="terminal" width="24" height="24"></i>
             <span>TayamaBot</span>
         </a>
@@ -138,7 +138,7 @@
     <!-- PÁGINA: TERMOS -->
     <main id="page-termos" class="page">
         <div class="termos-container">
-            <a href="#" onclick="showPage('home')" class="back-link">
+            <a href="/" onclick="showPage(event, 'home')" class="back-link">
                 <i data-lucide="arrow-left" width="16" height="16"></i> Voltar para a página inicial
             </a>
 
@@ -175,7 +175,7 @@
     <!-- PÁGINA: PRIVACIDADE -->
     <main id="page-privacidade" class="page">
         <div class="termos-container">
-            <a href="#" onclick="showPage('home')" class="back-link">
+            <a href="/" onclick="showPage(event, 'home')" class="back-link">
                 <i data-lucide="arrow-left" width="16" height="16"></i> Voltar para a página inicial
             </a>
 
@@ -213,8 +213,8 @@
     <footer class="footer">
         <p>TayamaBot © 2026 - Pega leve, ninguém é de ferro.</p>
         <div class="footer-links">
-            <a href="#" onclick="showPage('termos')">Termos de Uso</a>
-            <a href="#" onclick="showPage('privacidade')">Privacidade</a>
+            <a href="/termos" onclick="showPage(event, 'termos')">Termos de Uso</a>
+            <a href="/privacidade" onclick="showPage(event, 'privacidade')">Privacidade</a>
             <a href="https://github.com/pedrohl45/tayama-fatec-bot" target="_blank">GitHub</a>
         </div>
     </footer>

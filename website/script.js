@@ -2,7 +2,11 @@
 lucide.createIcons();
 
 // Navegação Single Page Application (SPA) com Rotas Virtuais
-function showPage(pageId) {
+function showPage(event, pageId) {
+    if (event && event.preventDefault) {
+        event.preventDefault();
+    }
+
     // Atualiza a URL sem recarregar a página
     const newPath = pageId === 'home' ? '/' : '/' + pageId;
     window.history.pushState({ pageId: pageId }, "", newPath);
@@ -33,9 +37,9 @@ window.addEventListener('popstate', function(e) {
 window.addEventListener('DOMContentLoaded', () => {
     const path = window.location.pathname;
     if (path.includes('termos')) {
-        showPage('termos');
+        showPage(null, 'termos');
     } else if (path.includes('privacidade')) {
-        showPage('privacidade');
+        showPage(null, 'privacidade');
     } else {
         // Se for / ou qualquer outra coisa, exibe a home mas não dá pushState pra não bugar o histórico
         document.querySelectorAll('.page').forEach(p => p.classList.remove('active'));

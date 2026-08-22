@@ -6,7 +6,6 @@ Os cogs apenas formatam Embeds e chamam estas funções.
 from __future__ import annotations
 
 from database.json_db import carregar_dados
-from database.user_db import get_user_data
 
 # ──────────────────────────────────────────────
 # Constantes
@@ -26,7 +25,6 @@ async def get_aulas_do_dia(dia: str) -> list[dict]:
     """
     Retorna lista de dicionários com informações das aulas para o dia informado.
     Cada item: {codigo, nome, inicio, fim, sala, professor}
-    Esta função é genérica (serve para todos os alunos), pois a grade é a mesma.
     """
     dados = await carregar_dados()
     resultado: list[dict] = []
@@ -52,30 +50,8 @@ async def get_aulas_do_dia(dia: str) -> list[dict]:
 
 async def get_todas_disciplinas() -> list[dict]:
     """Retorna a lista completa de disciplinas do dados.json."""
-async def get_todas_disciplinas(discord_id: int) -> list[dict]:
-    """
-    Retorna a lista completa de disciplinas do dados.json, MAS injeta 
-    o 'desempenho' pessoal do aluno puxado do arquivo dele.
-    """
     dados = await carregar_dados()
     return dados.get("disciplinas", [])
-    user_data = await get_user_data(discord_id)
-    
-    disciplinas_globais = dados.get("disciplinas", [])
-    
-    for disc in disciplinas_globais:
-        codigo = disc.get("codigo")
-        # Substitui o "desempenho" pelo do aluno (ou vazio se não tiver)
-        desemp_aluno = user_data.get("desempenho_disciplinas", {}).get(codigo, {
-            "notas": {"p1": None, "p2": None, "projeto": None},
-            "faltas": 0,
-            "frequencia_percentual": 100.0,
-            "aulas_dadas": 0,
-            "situacao": "Cursando"
-        })
-        disc["desempenho"] = desemp_aluno
-        
-    return disciplinas_globais
 
 
 # ──────────────────────────────────────────────
@@ -83,17 +59,14 @@ async def get_todas_disciplinas(discord_id: int) -> list[dict]:
 # ──────────────────────────────────────────────
 
 async def get_disciplinas_em_risco() -> list[dict]:
-async def get_disciplinas_em_risco(discord_id: int) -> list[dict]:
     """
     Retorna disciplinas com frequência <= LIMITE_FREQUENCIA (75%).
     Cada item: {nome, codigo, frequencia, faltas, aulas_dadas, faltas_max_permitidas}
     """
     dados = await carregar_dados()
-    disciplinas = await get_todas_disciplinas(discord_id)
     em_risco: list[dict] = []
 
     for disc in dados.get("disciplinas", []):
-    for disc in disciplinas:
         desemp = disc.get("desempenho", {})
         freq = desemp.get("frequencia_percentual", 100.0)
 

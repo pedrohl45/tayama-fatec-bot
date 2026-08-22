@@ -149,7 +149,6 @@ class FatecAulas(commands.Cog):
         await interaction.response.defer(thinking=True)
         try:
             disciplinas = await get_todas_disciplinas()
-            disciplinas = await get_todas_disciplinas(interaction.user.id)
             if not disciplinas:
                 await interaction.followup.send(
                     "Nenhuma disciplina cadastrada no momento.", ephemeral=True

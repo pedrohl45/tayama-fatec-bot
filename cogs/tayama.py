@@ -3,10 +3,11 @@ import random
 import discord
 from discord import app_commands
 from discord.ext import commands
+import urllib.parse
 
-# ──────────────────────────────────────────────
+# ==============================================
 # Carregamento Híbrido da Personalidade (Banco Tayama)
-# ──────────────────────────────────────────────
+# ==============================================
 def get_tayama_content():
     try:
         with open("database/tayama_content.json", "r", encoding="utf-8") as f:
@@ -14,14 +15,13 @@ def get_tayama_content():
     except FileNotFoundError:
         return {"quotes": ["Eu tô sem voz."], "dev_tips": ["Ligue o banco de dados."], "musicas": []}
 
-# ──────────────────────────────────────────────
+# ==============================================
 # Componentes (View UI)
-# ──────────────────────────────────────────────
+# ==============================================
 class MusicButtons(discord.ui.View):
     def __init__(self, track: dict):
         super().__init__()
         
-        import urllib.parse
         nome_busca = urllib.parse.quote_plus(track.get("nome", ""))
         
         # Spotify (Link original ou busca de fallback)
@@ -41,9 +41,9 @@ class MusicButtons(discord.ui.View):
         self.add_item(discord.ui.Button(label="Apple", url=am_url, style=discord.ButtonStyle.link, emoji="🍎"))
 
 
-# ──────────────────────────────────────────────
+# ==============================================
 # Cog: Tayama Corner
-# ──────────────────────────────────────────────
+# ==============================================
 class Tayama(commands.Cog):
     def __init__(self, bot: commands.Bot):
         self.bot = bot

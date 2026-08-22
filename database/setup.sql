@@ -43,3 +43,4 @@ CREATE TABLE IF NOT EXISTS sessoes_estudo (
     registrado_em   TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
     FOREIGN KEY (discord_id) REFERENCES alunos(discord_id) ON DELETE CASCADE
 );
+

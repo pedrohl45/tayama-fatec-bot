@@ -185,3 +185,4 @@ async def get_sessoes(discord_id: str) -> list:
         ) or []
     except Exception:
         return []
+

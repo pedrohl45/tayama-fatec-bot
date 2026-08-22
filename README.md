@@ -8,7 +8,9 @@
   [![Python](https://img.shields.io/badge/Python-3.10+-3776AB?style=for-the-badge&logo=python&logoColor=white)](https://python.org)
   [![Discord.py](https://img.shields.io/badge/Discord.py-2.x-5865F2?style=for-the-badge&logo=discord&logoColor=white)](https://discordpy.readthedocs.io/)
   [![MySQL](https://img.shields.io/badge/MySQL-8.0+-4479A1?style=for-the-badge&logo=mysql&logoColor=white)](https://www.mysql.com/)
-  [![Next.js](https://img.shields.io/badge/Next.js-14+-000000?style=for-the-badge&logo=next.js&logoColor=white)](https://nextjs.org/)
+  [![HTML5](https://img.shields.io/badge/HTML5-E34F26?style=for-the-badge&logo=html5&logoColor=white)](https://developer.mozilla.org/pt-BR/docs/Web/HTML)
+  [![CSS3](https://img.shields.io/badge/CSS3-1572B6?style=for-the-badge&logo=css3&logoColor=white)](https://developer.mozilla.org/pt-BR/docs/Web/CSS)
+  [![JavaScript](https://img.shields.io/badge/JavaScript-F7DF1E?style=for-the-badge&logo=javascript&logoColor=black)](https://developer.mozilla.org/pt-BR/docs/Web/JavaScript)
   [![Status](https://img.shields.io/badge/Status-Estável-C82245?style=for-the-badge)](#)
 </div>
 
@@ -21,7 +23,7 @@ Acabou o caos acadêmico, as planilhas feias e o desespero de calcular frequênc
 Ela tem uma personalidade sarcástica, ácida e foi desenvolvida para ambientes de **Engenharia de Software (FATEC)**, mas serve perfeitamente para qualquer universitário que não aguenta mais perder prazos.
 
 ### 🔗 Acesse a Página Oficial (Web)
-Nosso projeto possui um site super minimalista integrado com **Audio Player Contínuo (Darkwave/Post-Punk)** e guias rápidos para iniciantes. A landing page foi feita em React/Next.js e a música não para de tocar mesmo quando você navega entre as páginas!
+Nosso projeto possui um site super minimalista integrado com **Audio Player Contínuo (Darkwave/Post-Punk)** e guias rápidos para iniciantes. A landing page foi feita em puro HTML/CSS/JS e a música não para de tocar mesmo quando você navega entre as páginas graças à arquitetura Single Page!
 
 ---
 
@@ -80,10 +82,10 @@ O projeto foi modernizado para separar responsabilidades (Lógica de Negócios v
 - **Lib DB**: `pymysql` integrado a um executor assíncrono do `asyncio` (`run_in_executor`) para não bloquear o Event Loop durante operações pesadas de banco de dados.
 
 ### Frontend (Dashboard Website)
-- **Framework Web**: Next.js 14 (React) e TypeScript.
-- **Estilização**: Tailwind CSS, UI brutalista, paleta em tons carmesim (`#C82245`) e preto.
-- **Ícones**: Lucide Icons.
-- **Componentes**: Global Continuous Audio Player em Client Components injetados via Root Layout.
+- **Framework Web**: Vanilla Web (HTML5, CSS3, JavaScript puro).
+- **Estilização**: CSS Nativo desenhado do zero, focado em UI brutalista com paleta em tons carmesim (`#C82245`) e preto (Dark Mode).
+- **Ícones**: Lucide Icons (via CDN).
+- **Componentes**: Lógica de Single Page Application (SPA) customizada em `script.js` para garantir um Global Continuous Audio Player sem interromper a música ao trocar de tela.
 
 ---
 
@@ -131,15 +133,12 @@ python main.py
 ```
 *(Após o primeiro início, mude SYNC_COMMANDS para false para não sofrer Rate Limit do Discord).*
 
-### 3. Inicializando o Website (Next.js)
+### 3. Acessando o Website
+Como a aplicação foi otimizada para Vanilla Web, não há necessidade de Node.js, `npm` ou servidores complexos:
 ```bash
-cd website
-
-# Instale as dependências
-npm install
-
-# Suba a aplicação local
-npm run dev
+# Basta abrir o arquivo index.html no seu navegador favorito:
+# No Windows:
+start website/index.html
 ```
 
 ---

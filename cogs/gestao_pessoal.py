@@ -211,5 +211,84 @@ class GestaoPessoalMySQL(commands.Cog):
             await interaction.followup.send("❌ Erro ao registrar falta.", ephemeral=True)
 
 
+    # ─────────────────────────────────────────
+    # /adicionar_materia
+    # ─────────────────────────────────────────
+    @app_commands.command(name="adicionar_materia", description="Adiciona uma nova matéria à grade do seu semestre atual.")
+    async def adicionar_materia(self, interaction: discord.Interaction):
+        discord_id = str(interaction.user.id)
+        aluno = await get_aluno(discord_id)
+        
+        if not aluno:
+            await interaction.response.send_message("Você precisa criar seu `/perfil_setup` primeiro.", ephemeral=True)
+            return
+            
+        semestre = aluno.get("semestre", 1)
+        curso = aluno.get("curso", "DSM")
+        
+        await interaction.response.send_modal(AdicionarMateriaModal(semestre, curso))
+
+
+class AdicionarMateriaModal(discord.ui.Modal, title="Adicionar Matéria"):
+    codigo = discord.ui.TextInput(label="Código da Matéria", placeholder="Ex: ISW031", max_length=10)
+    nome = discord.ui.TextInput(label="Nome da Matéria", placeholder="Ex: Design Digital", max_length=150)
+    professor = discord.ui.TextInput(label="Nome do Professor", placeholder="Ex: Jean Carlos", max_length=150, required=False)
+    dia_semana = discord.ui.TextInput(label="Dia da Semana", placeholder="Ex: Segunda-feira", max_length=20)
+    horario = discord.ui.TextInput(label="Horário (Início - Fim)", placeholder="Ex: 07:10 - 08:50", max_length=30)
+
+    def __init__(self, semestre: int, curso: str):
+        super().__init__()
+        self.semestre = semestre
+        self.curso = curso
+
+    async def on_submit(self, interaction: discord.Interaction):
+        from database.json_db import carregar_dados, salvar_dados
+        dados = await carregar_dados()
+        
+        # Faz um parser simples do horário
+        horario_str = self.horario.value.split("-")
+        inicio = horario_str[0].strip() if len(horario_str) > 0 else "00:00"
+        fim = horario_str[1].strip() if len(horario_str) > 1 else "00:00"
+
+        nova_materia = {
+            "codigo": self.codigo.value.upper(),
+            "nome": self.nome.value,
+            "turma": "Sua Turma",
+            "carga_horaria": 80,
+            "semestre": self.semestre,
+            "curso": self.curso,
+            "professores": [{"nome": self.professor.value or "A definir"}],
+            "horarios": [{
+                "dia_semana": self.dia_semana.value.capitalize(),
+                "inicio": inicio,
+                "fim": fim,
+                "sala": "A definir"
+            }],
+            "ementa": "Adicionada manualmente.",
+            "bibliografia": []
+        }
+
+        # Verifica se a matéria já existe para esse curso/semestre
+        existe = False
+        for d in dados.setdefault("disciplinas", []):
+            if d.get("codigo") == nova_materia["codigo"] and d.get("curso") == self.curso:
+                # Apenas adiciona o horário novo
+                d.setdefault("horarios", []).append(nova_materia["horarios"][0])
+                existe = True
+                break
+        
+        if not existe:
+            dados["disciplinas"].append(nova_materia)
+
+        await salvar_dados(dados)
+
+        embed = discord.Embed(
+            title="📚 Matéria Adicionada!",
+            description=f"A matéria **{self.nome.value}** foi salva para o {self.semestre}º Semestre de {self.curso}.",
+            color=discord.Color.from_str("#c82245")
+        )
+        await interaction.response.send_message(embed=embed, ephemeral=True)
+
+
 async def setup(bot: commands.Bot):
     await bot.add_cog(GestaoPessoalMySQL(bot))

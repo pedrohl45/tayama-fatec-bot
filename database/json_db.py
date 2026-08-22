@@ -52,8 +52,6 @@ async def salvar_dados(dados: dict) -> None:
     Usa asyncio.Lock para garantir escrita atômica (sem race condition).
     """
     global _cache
-    if _cache is not None:
-        return _cache
     async with _lock:
         loop = asyncio.get_event_loop()
         await loop.run_in_executor(None, _salvar_sync, dados)

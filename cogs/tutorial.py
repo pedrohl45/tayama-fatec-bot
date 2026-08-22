@@ -21,12 +21,17 @@ class TutorialView(discord.ui.View):
         )
         embed.add_field(
             name="1. Crie seu perfil",
-            value="Digite `/perfil_setup nome:Seu Nome curso:Seu Curso`. Isso criará um banco de dados isolado só seu.",
+            value="Digite `/perfil_setup`. Isso criará um banco de dados isolado só seu e definirá seu semestre e curso.",
             inline=False
         )
         embed.add_field(
             name="2. E a FATEC?",
-            value="Você pode puxar os dados oficiais da grade e secretaria usando `/perfil_fatec` e `/materias`. Seus dados não se misturam com a turma.",
+            value="Você pode ver seus dados e editá-los em `/meu_perfil`. Para ver suas aulas e professores, use `/materias` e `/aulas_hoje`.",
+            inline=False
+        )
+        embed.add_field(
+            name="3. Minhas matérias não aparecem?",
+            value="Se a sua grade está vazia, use o comando `/adicionar_materia` para cadastrar as disciplinas do seu semestre. Assim todos da sua turma também terão acesso!",
             inline=False
         )
         embed.set_footer(text="Clique em 'Próximo' para ver como lançar faltas e notas.")
@@ -63,7 +68,7 @@ class TutorialView(discord.ui.View):
         )
         embed.add_field(
             name="🚀 Cronogramas Globais",
-            value="Temos o `/provas` e o `/avaliacoes` para o calendário de testes, além de `/api_sprints` para checar as datas e metas do Projeto Integrador (API).",
+            value="Temos o `/avaliacoes` para o calendário de testes, além de `/api_sprints` para checar as datas e metas do Projeto Integrador (API).",
             inline=False
         )
         embed.add_field(
@@ -86,7 +91,7 @@ class TutorialView(discord.ui.View):
         )
         embed.add_field(
             name="🎧 Post-Punk na Veia",
-            value="Para entrar no foco profundo, digite `/som`. Vou te recomendar uma pedrada Goth/Darkwave pra você parar de chorar e começar a programar. Tem links diretos pro Spotify, YouTube e SoundCloud.",
+            value="Para entrar no foco profundo, digite `/som`. Vou te recomendar uma pedrada Goth/Darkwave pra você parar de chorar e começar a programar. Tem links diretos pro Spotify, YouTube e Apple Music.",
             inline=False
         )
         embed.set_footer(text="Fim do Tutorial. Agora vai trabalhar.")

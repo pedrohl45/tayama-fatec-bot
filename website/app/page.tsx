@@ -42,11 +42,16 @@ export default function Home() {
 
       <main className="flex-1">
         {/* Hero Section */}
-        <section className="flex flex-col items-center justify-center text-center py-24 px-4 min-h-[70vh]">
+        <section className="relative flex flex-col items-center justify-center text-center py-32 px-4 min-h-[85vh] overflow-hidden">
           
-          <div className="relative mb-8 flex justify-center items-center">
-            <div className="absolute inset-0 bg-primary/30 rounded-full blur-2xl animate-pulse scale-125"></div>
-            <div className="relative w-48 h-48 md:w-56 md:h-56 rounded-full overflow-hidden border-4 border-primary shadow-[0_0_40px_rgba(200,34,69,0.8)] z-10">
+          {/* Fundo Supermercado */}
+          <div className="absolute inset-0 z-0 bg-[url('/supermarket.jpg')] bg-cover bg-center opacity-30 mix-blend-luminosity"></div>
+          {/* Degradê sobre o fundo */}
+          <div className="absolute inset-0 z-0 bg-gradient-to-t from-background via-background/80 to-background/30"></div>
+
+          <div className="relative mb-8 flex justify-center items-center z-10">
+            <div className="absolute inset-0 bg-primary/40 rounded-full blur-3xl animate-pulse scale-150"></div>
+            <div className="relative w-64 h-64 md:w-80 md:h-80 rounded-full overflow-hidden border-4 border-primary shadow-[0_0_60px_rgba(200,34,69,0.9)]">
               <Image 
                 src="/tayama.jpg" 
                 alt="Avatar da Tayama" 
@@ -58,10 +63,10 @@ export default function Home() {
             </div>
           </div>
           
-          <h1 className="text-4xl md:text-6xl font-bold mb-4 tracking-tight">
+          <h1 className="text-5xl md:text-7xl font-bold mb-4 tracking-tight z-10 drop-shadow-lg">
             Bem-vinda, Tayama.
           </h1>
-          <p className="text-lg md:text-xl text-muted-foreground max-w-2xl mb-10 relative z-10">
+          <p className="text-lg md:text-2xl text-muted-foreground max-w-2xl mb-12 relative z-10 drop-shadow-md">
             Sua assistente acadêmica noturna e de produtividade. <br className="hidden md:block" /> 
             Organize suas notas, acompanhe faltas e faça pausas pro café com uma dose de sarcasmo.
           </p>
@@ -186,7 +191,7 @@ export default function Home() {
       </main>
 
       {/* Floating Audio Player (Clean & Dark) */}
-      <audio ref={audioRef} src="/darkwave.mp3" loop preload="auto" />
+      <audio ref={audioRef} src="/musica.mp3" loop preload="auto" />
       <button 
         onClick={togglePlay}
         className={`fixed bottom-6 right-6 z-50 flex items-center justify-center w-14 h-14 bg-background/90 backdrop-blur-md border border-[#2a2a30] rounded-full shadow-lg hover:border-primary/70 transition-all ${isPlaying ? 'border-primary shadow-[0_0_15px_rgba(200,34,69,0.4)]' : ''}`}

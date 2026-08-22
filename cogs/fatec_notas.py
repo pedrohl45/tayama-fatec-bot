@@ -113,28 +113,31 @@ class FatecNotas(commands.Cog):
     async def boletim(self, interaction: discord.Interaction):
         await interaction.response.defer(thinking=True)
         try:
-            dados = await carregar_dados()
+            disciplinas = await get_todas_disciplinas(interaction.user.id)
             embed = discord.Embed(
                 title="📊 Boletim de Frequência e Desempenho",
                 color=discord.Color.from_str("#c82245"),
             )
 
-            for disc in dados.get("disciplinas", []):
-                desempenho = disc.get("desempenho", {})
-                frequencia = desempenho.get("frequencia_percentual", 100.0)
-                faltas = desempenho.get("faltas", 0)
-                situacao = desempenho.get("situacao", "—")
-                alerta = " ⚠️" if frequencia <= 75 else ""
+            if not disciplinas:
+                embed.description = "Nenhuma disciplina cadastrada para o seu semestre."
+            else:
+                for disc in disciplinas:
+                    desempenho = disc.get("desempenho", {})
+                    frequencia = desempenho.get("frequencia_percentual", 100.0)
+                    faltas = desempenho.get("faltas", 0)
+                    situacao = desempenho.get("situacao", "—")
+                    alerta = " ⚠️" if frequencia <= 75 else ""
 
-                embed.add_field(
-                    name=f"{disc.get('codigo', '?')} — {disc.get('nome', '?')}",
-                    value=(
-                        f"📈 Frequência: **{frequencia}%**{alerta}\n"
-                        f"❌ Faltas: {faltas}\n"
-                        f"📌 Status: {situacao}"
-                    ),
-                    inline=True,
-                )
+                    embed.add_field(
+                        name=f"{disc.get('codigo', '?')} — {disc.get('nome', '?')}",
+                        value=(
+                            f"📈 Frequência: **{frequencia}%**{alerta}\n"
+                            f"❌ Faltas: {faltas}\n"
+                            f"📌 Status: {situacao}"
+                        ),
+                        inline=True,
+                    )
 
             await interaction.followup.send(embed=embed)
 

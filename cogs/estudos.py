@@ -4,7 +4,7 @@ import discord
 from discord import app_commands
 from discord.ext import commands
 
-from database.user_db import get_user_data, update_user_data
+from database.mysql_db import registrar_sessao, get_sessoes
 
 logger = logging.getLogger("TayamaBot")
 
@@ -47,33 +47,15 @@ class RegistroEstudoModal(discord.ui.Modal, title="📚 Registrar Sessão de Est
             )
 
         nome_materia = self.materia.value.strip()
-        obs = self.observacao.value.strip() if self.observacao.value else None
+        obs = self.observacao.value.strip() if self.observacao.value else ""
+        discord_id = str(interaction.user.id)
 
-        try:
-            user_data = await get_user_data(interaction.user.id)
-            focos = user_data.setdefault("estudos_foco", [])
-
-            # Acumula no registro existente ou cria um novo
-            existente = next(
-                (f for f in focos if f.get("materia", "").lower() == nome_materia.lower()),
-                None,
-            )
-            if existente:
-                existente["tempo_registrado_minutos"] += minutos
-                if obs:
-                    existente.setdefault("observacoes", []).append(obs)
-            else:
-                novo = {
-                    "materia": nome_materia,
-                    "tempo_registrado_minutos": minutos,
-                }
-                if obs:
-                    novo["observacoes"] = [obs]
-                focos.append(novo)
-
-            await update_user_data(interaction.user.id, user_data)
-
-            total = existente["tempo_registrado_minutos"] if existente else minutos
+        ok = await registrar_sessao(discord_id, nome_materia, minutos, obs)
+        if ok:
+            # Puxa o total acumulado
+            sessoes = await get_sessoes(discord_id)
+            total = sum(s.get("minutos", 0) for s in sessoes if s.get("disciplina", "").lower() == nome_materia.lower())
+            
             horas, mins = divmod(total, 60)
             total_fmt = f"{horas}h {mins}min" if horas else f"{mins}min"
 
@@ -89,12 +71,8 @@ class RegistroEstudoModal(discord.ui.Modal, title="📚 Registrar Sessão de Est
             embed.set_footer(text="Tayama • Continue assim! 💪")
 
             await interaction.response.send_message(embed=embed, ephemeral=True)
-
-        except Exception:
-            logger.error("Erro ao salvar sessão de estudo", exc_info=True)
-            await interaction.response.send_message(
-                "⚠️ Erro ao salvar o registro. Tente novamente.", ephemeral=True
-            )
+        else:
+            await interaction.response.send_message("❌ Erro ao salvar sessão no banco de dados.", ephemeral=True)
 
     async def on_error(self, interaction: discord.Interaction, error: Exception):
         logger.error("Erro no RegistroEstudoModal", exc_info=error)
@@ -118,33 +96,37 @@ class Estudos(commands.Cog):
     async def estudo_resumo(self, interaction: discord.Interaction):
         await interaction.response.defer(thinking=True)
         try:
-            user_data = await get_user_data(interaction.user.id)
-            focos = user_data.get("estudos_foco", [])
+            sessoes = await get_sessoes(str(interaction.user.id))
 
             embed = discord.Embed(
                 title="📈 Resumo de Foco & Estudos",
                 color=discord.Color.from_str("#c82245"),
             )
 
-            if not focos:
+            if not sessoes:
                 embed.description = (
                     "Nenhum tempo de estudo registrado ainda.\n"
                     "Use `/registrar_estudo` para começar! 📚"
                 )
             else:
-                total_geral = sum(f.get("tempo_registrado_minutos", 0) for f in focos)
+                total_geral = sum(s.get("minutos", 0) for s in sessoes)
                 horas_g, mins_g = divmod(total_geral, 60)
                 embed.description = (
                     f"⏱️ **Total geral:** "
                     f"{'%dh %02dmin' % (horas_g, mins_g) if horas_g else '%dmin' % mins_g}"
                 )
 
-                for item in focos:
-                    t = item.get("tempo_registrado_minutos", 0)
+                # Agrupa por matéria
+                agrupado = {}
+                for s in sessoes:
+                    mat = s.get("disciplina", "Geral")
+                    agrupado[mat] = agrupado.get(mat, 0) + s.get("minutos", 0)
+
+                for mat, t in agrupado.items():
                     h, m = divmod(t, 60)
                     tempo_fmt = f"{h}h {m:02d}min" if h else f"{m}min"
                     embed.add_field(
-                        name=item.get("materia", "Geral"),
+                        name=mat,
                         value=f"⏰ **{tempo_fmt}**",
                         inline=True,
                     )

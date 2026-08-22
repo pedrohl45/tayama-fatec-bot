@@ -50,13 +50,24 @@ class General(commands.Cog):
             inline=False,
         )
         embed.add_field(
-            name="🎓 Secretaria",
-            value="`/perfil_fatec` — Dados da secretaria e horas complementares.",
+            name="🎓 Secretaria & Perfil",
+            value=(
+                "`/meu_perfil` — Vê os seus dados acadêmicos com botão de Editar Perfil.\n"
+                "`/perfil_fatec` — Dados resumidos da secretaria e progresso."
+            ),
             inline=False,
         )
         embed.add_field(
             name="🚀 Projeto Integrador (API)",
             value="`/api_sprints` — Semestre e metas das Sprints do Projeto Integrador.",
+            inline=False,
+        )
+        embed.add_field(
+            name="🛠️ Administração (Apenas Dono)",
+            value=(
+                "`/admin_alunos` — Painel para gerenciar alunos cadastrados no MySQL.\n"
+                "`/admin_checar` — Verifica rapidamente o cadastro de um usuário."
+            ),
             inline=False,
         )
         embed.add_field(

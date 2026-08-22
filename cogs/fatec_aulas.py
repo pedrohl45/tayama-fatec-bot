@@ -92,11 +92,11 @@ class FatecAulas(commands.Cog):
     async def aulas_hoje(self, interaction: discord.Interaction, dia: str = "Segunda-feira"):
         await interaction.response.defer(thinking=True)
         try:
-            aulas = await get_aulas_do_dia(dia)
+            aulas = await get_aulas_do_dia(dia, interaction.user.id)
             embed = discord.Embed(title=f"🦇 Grade de Aulas — {dia}", color=discord.Color.from_str("#c82245"))
 
             if not aulas:
-                embed.description = "Nenhuma aula. Pode voltar a dormir. 🌙"
+                embed.description = "Nenhuma aula para o seu semestre. Pode voltar a dormir. 🌙"
             else:
                 for aula in aulas:
                     embed.add_field(
@@ -119,23 +119,22 @@ class FatecAulas(commands.Cog):
         try:
             disciplinas = await get_todas_disciplinas(interaction.user.id)
             if not disciplinas:
-                return await interaction.followup.send("Nenhuma disciplina.", ephemeral=True)
+                return await interaction.followup.send("Nenhuma disciplina para o seu semestre.", ephemeral=True)
             view = DisciplinaView(disciplinas)
             await interaction.followup.send("🖤 Escolha uma matéria:", view=view)
         except Exception:
             logger.error("Erro em /disciplina", exc_info=True)
             await interaction.followup.send("⚠️ Erro.", ephemeral=True)
 
-    @app_commands.command(name="materias", description="Lista todas as matérias e seus horários.")
+    @app_commands.command(name="materias", description="Lista todas as matérias e seus horários (do seu semestre).")
     async def materias(self, interaction: discord.Interaction):
         await interaction.response.defer(thinking=True)
         try:
-            dados = await carregar_dados()
-            disciplinas = dados.get("disciplinas", [])
-            embed = discord.Embed(title="🖤 Disciplinas do Semestre", color=discord.Color.from_str("#c82245"))
+            disciplinas = await get_todas_disciplinas(interaction.user.id)
+            embed = discord.Embed(title="🖤 Disciplinas do Seu Semestre", color=discord.Color.from_str("#c82245"))
 
             if not disciplinas:
-                embed.description = "Nenhuma disciplina cadastrada."
+                embed.description = "Nenhuma disciplina cadastrada para o seu semestre/curso atual."
             else:
                 for disc in disciplinas:
                     horarios_fmt = " | ".join(f"{h.get('dia_semana', '?')} {h.get('inicio', '?')}" for h in disc.get("horarios", [])) or "Sem horário"

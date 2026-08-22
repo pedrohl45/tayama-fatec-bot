@@ -40,3 +40,4 @@ async def test():
     print("\nTudo funcionando perfeitamente!")
 
 asyncio.run(test())
+

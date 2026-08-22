@@ -5,8 +5,10 @@ Os cogs apenas formatam Embeds e chamam estas funções.
 """
 from __future__ import annotations
 
+from __future__ import annotations
+
 from database.json_db import carregar_dados
-from database.user_db import get_user_data
+from database.mysql_db import get_aluno, get_notas
 
 # ──────────────────────────────────────────────
 # Constantes
@@ -22,15 +24,32 @@ PESOS = {"p1": 0.35, "p2": 0.35, "projeto": 0.30}
 # Aulas
 # ──────────────────────────────────────────────
 
-async def get_aulas_do_dia(dia: str) -> list[dict]:
+async def get_aulas_do_dia(dia: str, discord_id: int = None) -> list[dict]:
     """
-    Retorna lista de dicionários com informações das aulas para o dia informado.
-    Cada item: {codigo, nome, inicio, fim, sala, professor}
+    Retorna lista de dicionários com informações das aulas para o dia informado,
+    filtradas pelo semestre/curso do aluno no MySQL.
     """
     dados = await carregar_dados()
+    
+    # Filtro por perfil do aluno
+    semestre_aluno = 1
+    curso_aluno = "Desenvolvimento de Software Multiplataforma (DSM)"
+    
+    if discord_id:
+        aluno = await get_aluno(str(discord_id))
+        if aluno:
+            semestre_aluno = aluno.get("semestre", 1)
+            curso_aluno = aluno.get("curso", curso_aluno)
+
     resultado: list[dict] = []
 
     for disc in dados.get("disciplinas", []):
+        # Checa se a disciplina é da grade deste aluno
+        d_semestre = disc.get("semestre", 1)
+        d_curso = disc.get("curso", curso_aluno)
+        if str(d_semestre) != str(semestre_aluno) or d_curso != curso_aluno:
+            continue
+
         for horario in disc.get("horarios", []):
             if horario.get("dia_semana", "").lower() == dia.lower():
                 profs = disc.get("professores", [])
@@ -44,37 +63,53 @@ async def get_aulas_do_dia(dia: str) -> list[dict]:
                     "professor": professor,
                 })
 
-    # Ordena por horário de início
     resultado.sort(key=lambda a: a["inicio"])
     return resultado
 
 
 async def get_todas_disciplinas(discord_id: int) -> list[dict]:
-    """Retorna a lista completa de disciplinas globais com o desempenho injetado."""
+    """Retorna a lista completa de disciplinas do semestre do aluno com o desempenho do MySQL."""
     dados = await carregar_dados()
-    disciplinas = dados.get("disciplinas", [])
     
-    user_data = await get_user_data(discord_id)
-    desempenho_db = user_data.get("desempenho_disciplinas", {})
+    aluno = await get_aluno(str(discord_id))
+    semestre_aluno = aluno.get("semestre", 1) if aluno else 1
+    curso_aluno = aluno.get("curso", "Desenvolvimento de Software Multiplataforma (DSM)") if aluno else "DSM"
+
+    # Busca notas do MySQL e transforma em dicionário indexado pelo código
+    notas_lista = await get_notas(str(discord_id))
+    notas_map = {n["codigo_disciplina"]: n for n in notas_lista}
+
+    disciplinas = []
     
-    for disc in disciplinas:
+    for disc in dados.get("disciplinas", []):
+        d_semestre = disc.get("semestre", 1)
+        d_curso = disc.get("curso", "DSM")
+        if str(d_semestre) != str(semestre_aluno):
+            continue
+
         codigo = disc.get("codigo")
-        desemp_aluno = desempenho_db.get(codigo, {
-            "notas": {"p1": None, "p2": None, "projeto": None},
-            "faltas": 0,
+        desemp_mysql = notas_map.get(codigo, {})
+        
+        desemp_aluno = {
+            "notas": {
+                "p1": desemp_mysql.get("p1"),
+                "p2": desemp_mysql.get("p2"),
+                "projeto": desemp_mysql.get("projeto"),
+                "exame_final": desemp_mysql.get("exame_final")
+            },
+            "faltas": desemp_mysql.get("faltas", 0),
             "situacao": "Cursando"
-        })
+        }
         
         carga = disc.get("carga_horaria", 80)
-        faltas = desemp_aluno.get("faltas", 0)
-        
-        # O cálculo de frequência e risco passa a ser em tempo real baseado nas faltas
+        faltas = desemp_aluno["faltas"]
         frequencia = round(100.0 * (carga - faltas) / carga, 2) if carga > 0 else 100.0
         
         desemp_aluno["aulas_dadas"] = carga
         desemp_aluno["frequencia_percentual"] = frequencia
         
         disc["desempenho"] = desemp_aluno
+        disciplinas.append(disc)
         
     return disciplinas
 

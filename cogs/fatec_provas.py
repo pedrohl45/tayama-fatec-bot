@@ -29,7 +29,7 @@ class FatecProvas(commands.Cog):
 
             embed = discord.Embed(
                 title="📝 Cronograma de Provas e Entregas - FATEC",
-                color=discord.Color.orange(),
+                color=discord.Color.from_str("#c82245"),
             )
 
             for p in provas:

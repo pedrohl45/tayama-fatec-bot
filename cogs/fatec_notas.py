@@ -116,7 +116,7 @@ class FatecNotas(commands.Cog):
             dados = await carregar_dados()
             embed = discord.Embed(
                 title="📊 Boletim de Frequência e Desempenho",
-                color=discord.Color.green(),
+                color=discord.Color.from_str("#c82245"),
             )
 
             for disc in dados.get("disciplinas", []):
@@ -152,7 +152,7 @@ class FatecNotas(commands.Cog):
             dados = await carregar_dados()
             embed = discord.Embed(
                 title="📝 Cronograma de Avaliações",
-                color=discord.Color.orange(),
+                color=discord.Color.from_str("#c82245"),
             )
 
             provas = dados.get("cronograma_avaliacoes", [])
@@ -191,7 +191,7 @@ class FatecNotas(commands.Cog):
 
             embed = discord.Embed(
                 title="⚠️ Disciplinas com Frequência em Risco",
-                color=discord.Color.red() if em_risco else discord.Color.green(),
+                color=discord.Color.from_str("#c82245") if em_risco else discord.Color.green(),
             )
 
             if not em_risco:

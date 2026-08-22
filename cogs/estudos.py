@@ -79,7 +79,7 @@ class RegistroEstudoModal(discord.ui.Modal, title="📚 Registrar Sessão de Est
 
             embed = discord.Embed(
                 title="✅ Sessão de estudo registrada!",
-                color=discord.Color.green(),
+                color=discord.Color.from_str("#c82245"),
             )
             embed.add_field(name="Matéria", value=nome_materia, inline=True)
             embed.add_field(name="Sessão", value=f"+{minutos} min", inline=True)
@@ -123,7 +123,7 @@ class Estudos(commands.Cog):
 
             embed = discord.Embed(
                 title="📈 Resumo de Foco & Estudos",
-                color=discord.Color.green(),
+                color=discord.Color.from_str("#c82245"),
             )
 
             if not focos:

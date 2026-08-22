@@ -16,7 +16,7 @@ class FatecAluno(commands.Cog):
         sec = dados.get("secretaria", {}) if isinstance(dados, dict) else {}
         hc = dados.get("horas_complementares", {}) if isinstance(dados, dict) else {}
         
-        embed = discord.Embed(title="🎓 Secretaria Virtual FATEC", color=discord.Color.blue())
+        embed = discord.Embed(title="🎓 Secretaria Virtual FATEC", color=discord.Color.from_str("#c82245"))
         
         # Exibe apenas nome e curso (sem dados sensíveis como RA e e-mail)
         embed.add_field(

@@ -25,20 +25,26 @@ export default function Home() {
         {/* Hero Section */}
         <section className="flex flex-col items-center justify-center text-center py-24 px-4 min-h-[70vh]">
           
-          <div className="w-32 h-32 rounded-full overflow-hidden mb-6 border-2 border-primary shadow-[0_0_30px_rgba(200,34,69,0.4)] relative">
-            <Image 
-              src="/tayama.jpg" 
-              alt="Avatar da Tayama" 
-              fill
-              className="object-cover"
-              priority
-            />
+          <div className="relative mb-8 flex justify-center items-center">
+            {/* Glow vermelho animado no fundo */}
+            <div className="absolute inset-0 bg-primary/30 rounded-full blur-2xl animate-pulse scale-125"></div>
+            {/* Container da Imagem */}
+            <div className="relative w-48 h-48 md:w-56 md:h-56 rounded-full overflow-hidden border-4 border-primary shadow-[0_0_40px_rgba(200,34,69,0.8)] z-10">
+              <Image 
+                src="/tayama.jpg" 
+                alt="Avatar da Tayama" 
+                fill
+                quality={100}
+                className="object-cover"
+                priority
+              />
+            </div>
           </div>
           
           <h1 className="text-4xl md:text-6xl font-bold mb-4 tracking-tight">
             Bem-vinda, Tayama.
           </h1>
-          <p className="text-lg md:text-xl text-muted-foreground max-w-2xl mb-10">
+          <p className="text-lg md:text-xl text-muted-foreground max-w-2xl mb-10 relative z-10">
             Sua assistente acadêmica noturna e de produtividade. <br className="hidden md:block" /> 
             Organize suas notas, acompanhe faltas e faça pausas pro café com uma dose de sarcasmo.
           </p>

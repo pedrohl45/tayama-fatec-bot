@@ -26,7 +26,7 @@ class FatecApi(commands.Cog):
 
             embed = discord.Embed(
                 title="🚀 Metodologia Ágil - Sprints do Projeto Integrador",
-                color=discord.Color.green(),
+                color=discord.Color.from_str("#c82245"),
             )
 
             if not sprints:

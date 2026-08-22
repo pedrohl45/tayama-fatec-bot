@@ -62,7 +62,7 @@ class DisciplinaSelect(discord.ui.Select):
 
         embed = discord.Embed(
             title=f"📘 {disc.get('nome', '?')}",
-            color=discord.Color.blurple(),
+            color=discord.Color.from_str("#c82245"),
         )
         embed.add_field(name="Código", value=disc.get("codigo", "?"), inline=True)
         embed.add_field(name="Carga Horária", value=f"{disc.get('carga_horaria', '?')}h", inline=True)

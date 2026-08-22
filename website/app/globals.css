@@ -9,7 +9,7 @@
   
   :root {
     /* Cores padrão do modo dark para a Tayama */
-    --background: 240 10% 10%; /* Fundo quase preto */
+    --background: 240 10% 4%; /* Mais escuro */ /* Fundo quase preto */
     --foreground: 240 10% 90%; /* Texto claro */
 
     --card: 240 10% 14%; /* Cinza chumbo pros cards */

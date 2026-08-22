@@ -1,0 +1,186 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>TayamaBot</title>
+    <meta name="description" content="Sua assistente acadêmica noturna. Organize sua rotina, acompanhe notas e faça pausas com uma dose de sarcasmo.">
+    
+    <!-- Google Fonts -->
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link href="https://fonts.googleapis.com/css2?family=PT+Sans:wght@400;700&display=swap" rel="stylesheet" />
+
+    <!-- CSS Externo -->
+    <link rel="stylesheet" href="style.css">
+
+    <!-- Ícones Lucide (CDN) -->
+    <script src="https://unpkg.com/lucide@latest"></script>
+</head>
+<body>
+
+    <!-- CABEÇALHO GLOBAL -->
+    <header class="header">
+        <a href="#" onclick="showPage('home')" class="logo">
+            <i data-lucide="terminal" width="24" height="24"></i>
+            <span>TayamaBot</span>
+        </a>
+        <a href="https://github.com/pedrohl45/tayama-fatec-bot" target="_blank" class="github-link" title="GitHub">
+            <i data-lucide="github" width="24" height="24"></i>
+        </a>
+    </header>
+
+    <!-- PÁGINA: HOME -->
+    <main id="page-home" class="page active">
+        <!-- Hero Section -->
+        <section class="hero">
+            <div class="hero-bg"></div>
+            <div class="hero-gradient"></div>
+
+            <div class="avatar-container">
+                <div class="avatar-glow"></div>
+                <img src="public/tayama.jpg" alt="Tayama Avatar" class="avatar-image">
+            </div>
+            
+            <h1>Bem-vinda, Tayama.</h1>
+            <p>
+                Sua assistente acadêmica noturna e de produtividade.<br>
+                Organize suas notas, acompanhe faltas e faça pausas pro café com uma dose de sarcasmo.
+            </p>
+            
+            <div class="cta-buttons">
+                <a href="https://discord.com/oauth2/authorize?client_id=1540221236821364788&permissions=8&scope=bot%20applications.commands" target="_blank" class="btn btn-primary">
+                    Adicionar ao Discord
+                </a>
+                <a href="#tutorial" class="btn btn-secondary">
+                    Como Começar
+                </a>
+            </div>
+        </section>
+
+        <!-- Tutorial Section -->
+        <section id="tutorial" class="tutorial-section">
+            <div class="section-container">
+                <div class="section-title-wrapper">
+                    <h2 class="section-title">Manual de Sobrevivência</h2>
+                    <p class="section-subtitle">Leia se quiser. Se não ler, não chore quando reprovar por falta no final do semestre.</p>
+                </div>
+
+                <div class="step-list">
+                    <!-- Item 1 -->
+                    <div class="step-item">
+                        <div class="step-number">1</div>
+                        <div class="step-content">
+                            <h3>A Burocracia Inicial</h3>
+                            <p>A FATEC não vai adivinhar quem você é. Vá até o servidor, digite <code>/perfil_setup</code> e me deixe criar um espaço isolado no servidor (MySQL) para documentar os seus futuros fracassos. Depois rode <code>/materias</code> pra encarar de frente o tamanho do problema que é a sua grade desse semestre.</p>
+                        </div>
+                    </div>
+
+                    <!-- Item 2 -->
+                    <div class="step-item">
+                        <div class="step-number">2</div>
+                        <div class="step-content">
+                            <h3>Controle de Danos</h3>
+                            <p>Decidiu ficar em casa dormindo em vez de ir pra aula? A vida é sua. Mas tenha a decência de avisar o sistema rodando <code>/lancar_falta</code>. Pegou o resultado da prova? Registre com <code>/lancar_nota</code>. Quando o desespero bater, digite <code>/media_necessaria</code> e eu calculo matematicamente qual milagre você precisa realizar na P2.</p>
+                        </div>
+                    </div>
+
+                    <!-- Item 3 -->
+                    <div class="step-item">
+                        <div class="step-number">3</div>
+                        <div class="step-content">
+                            <h3>Dependências e Dispensas</h3>
+                            <p>Ficou de DP e precisa cursar uma matéria de outro semestre? Sem problema, digite <code>/adicionar_dp</code> que eu injeto ela na sua grade. Foi dispensado de Inglês? Digite <code>/remover_materia</code> para escondê-la da sua vista. O sistema agora é inteligente.</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- Features Section -->
+        <section id="features" class="features-section">
+            <div class="section-container">
+                <div class="section-title-wrapper">
+                    <h2 class="section-title" style="color: #e4e4e7;">Por que a Tayama?</h2>
+                    <p class="section-subtitle">A faculdade cobra caro da sua sanidade. A Tayama automatiza a papelada para você poder focar no que importa.</p>
+                </div>
+
+                <div class="features-grid">
+                    <div class="feature-card">
+                        <div class="feature-icon"><i data-lucide="graduation-cap" width="32" height="32"></i></div>
+                        <h3>Controle Acadêmico</h3>
+                        <p>Cálculo automático de notas mínimas para aprovação e alertas de faltas.</p>
+                    </div>
+                    <div class="feature-card">
+                        <div class="feature-icon"><i data-lucide="clock" width="32" height="32"></i></div>
+                        <h3>Gestão Ágil e Foco</h3>
+                        <p>Registro de horas de estudo e metodologias ágeis para o Projeto Integrador.</p>
+                    </div>
+                    <div class="feature-card">
+                        <div class="feature-icon"><i data-lucide="music" width="32" height="32"></i></div>
+                        <h3>Pausa pro Café</h3>
+                        <p>Use <code>/som</code> e deixe a Tayama indicar aquele post-punk para focar no código.</p>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- CTA Section -->
+        <section class="cta-section">
+            <h2>Pronto para organizar o caos?</h2>
+            <p>Adicione a Tayama ao seu servidor e controle sua vida acadêmica.</p>
+            <a href="https://discord.com/oauth2/authorize?client_id=1540221236821364788&permissions=8&scope=bot%20applications.commands" target="_blank" class="btn btn-outline">
+                Convide a Tayama <i data-lucide="arrow-right" width="18" height="18"></i>
+            </a>
+        </section>
+    </main>
+
+    <!-- PÁGINA: TERMOS -->
+    <main id="page-termos" class="page">
+        <div class="termos-container">
+            <a href="#" onclick="showPage('home')" class="back-link">
+                <i data-lucide="arrow-left" width="16" height="16"></i> Voltar para a página inicial
+            </a>
+
+            <h1 class="termos-title">Termos de Uso</h1>
+            
+            <div class="termos-content">
+                <section>
+                    <h2>1. Aceitação do Caos</h2>
+                    <p>Ao convidar a Tayama para o seu servidor, você aceita que a faculdade é difícil, o código quebra e a Tayama vai te lembrar disso sarcasticamente. Se não concorda, use agenda de papel.</p>
+                </section>
+                <section>
+                    <h2>2. Seus Dados (No MySQL)</h2>
+                    <p>A Tayama salva suas notas, faltas e horas de estudo no banco de dados. Nós <strong>não vendemos seus dados</strong> para ninguém. Apenas calculamos se você vai rodar por falta.</p>
+                </section>
+                <section>
+                    <h2>3. Restrições e Banimentos</h2>
+                    <p>Qualquer tentativa de abuso, injeção de SQL ou flood de requisições resultará em ban permanente do seu Discord ID.</p>
+                </section>
+                <div class="termos-footer">
+                    Última atualização: 22 de Agosto de 2026. <br /> Pega leve, ninguém é de ferro.
+                </div>
+            </div>
+        </div>
+    </main>
+
+    <!-- RODAPÉ -->
+    <footer class="footer">
+        <p>TayamaBot © 2026 - Feita por @pedrohl45</p>
+        <div class="footer-links">
+            <a href="#" onclick="showPage('termos')">Termos de Uso</a>
+            <a href="https://github.com/pedrohl45/tayama-fatec-bot" target="_blank">GitHub</a>
+        </div>
+    </footer>
+
+    <!-- AUDIO PLAYER CONTÍNUO -->
+    <audio id="bgAudio" src="public/musica.mp3" loop preload="auto"></audio>
+    <button id="audioBtn" class="audio-btn">
+        <i id="audioIcon" data-lucide="disc" width="24" height="24"></i>
+    </button>
+
+    <!-- Script Externo -->
+    <script src="script.js"></script>
+</body>
+</html>
+

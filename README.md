@@ -7,6 +7,7 @@
 
   [![Python](https://img.shields.io/badge/Python-3.10+-3776AB?style=for-the-badge&logo=python&logoColor=white)](https://python.org)
   [![Discord.py](https://img.shields.io/badge/Discord.py-2.x-5865F2?style=for-the-badge&logo=discord&logoColor=white)](https://discordpy.readthedocs.io/)
+  [![MySQL](https://img.shields.io/badge/MySQL-8.0+-4479A1?style=for-the-badge&logo=mysql&logoColor=white)](https://www.mysql.com/)
   [![Next.js](https://img.shields.io/badge/Next.js-14+-000000?style=for-the-badge&logo=next.js&logoColor=white)](https://nextjs.org/)
   [![Status](https://img.shields.io/badge/Status-Estável-C82245?style=for-the-badge)](#)
 </div>
@@ -20,56 +21,86 @@ Acabou o caos acadêmico, as planilhas feias e o desespero de calcular frequênc
 Ela tem uma personalidade sarcástica, ácida e foi desenvolvida para ambientes de **Engenharia de Software (FATEC)**, mas serve perfeitamente para qualquer universitário que não aguenta mais perder prazos.
 
 ### 🔗 Acesse a Página Oficial (Web)
-Nosso projeto possui um site super minimalista integrado com **Audio Player (Darkwave/Post-Punk)** e guias rápidos para iniciantes. A landing page foi feita em React/Next.js.
+Nosso projeto possui um site super minimalista integrado com **Audio Player Contínuo (Darkwave/Post-Punk)** e guias rápidos para iniciantes. A landing page foi feita em React/Next.js e a música não para de tocar mesmo quando você navega entre as páginas!
 
 ---
 
-## ✨ O que há de novo? (Atualização 2.0)
+## ✨ O que há de novo? (Atualização 3.0)
 
-A arquitetura passou por uma revolução gigante para suportar escala global sem perder a identidade e velocidade:
+A arquitetura passou por uma revolução gigante para suportar escala global, múltiplos cursos e regras acadêmicas avançadas:
 
-- **🔐 Banco de Dados Híbrido (Multi-usuário)**: Antes, todo mundo dividia o mesmo arquivo. Agora, através do `/perfil_setup`, a Tayama gera um contêiner virtual JSON isolado (`alunos_data.json`) para as notas e faltas **de cada estudante**. As aulas globais são lidas de um arquivo mestre.
-- **⚡ Sistema de Cache em Memória**: O disco não sofre mais. A Tayama agora carrega os bancos na RAM e otimiza a latência das mensagens em *milisegundos*.
-- **🎮 Tutorial Paginado In-App**: Criamos o comando `/tutorial`, uma View Interativa no Discord (com botões de página) que ensina os novos alunos como usarem a Tayama passo a passo.
-- **🎵 Tayama FM (API Offline de Músicas)**: O comando `/som` foi reformulado com um banco interno contendo as melhores recomendações de *Darkwave*, *Sovietwave* e *Goth Rock*, injetando no chat botões perfeitamente linkados para o **Spotify, YouTube e SoundCloud**.
-- **🧠 Autocomplete Dinâmico**: Ao usar `/lancar_nota` ou `/lancar_falta`, o Discord puxa em tempo real a grade oficial do semestre para sugerir o nome correto da disciplina.
+- **🔐 Migração Completa para MySQL**: Abandonamos os arquivos de texto para perfis. Toda a gestão de alunos, notas, faltas e sessões de estudo agora ocorre em tabelas relacionais de alta performance no **MySQL**. Seus dados estão seguros, blindados e processados em milissegundos.
+- **🧬 Gestão Inteligente de Grade e Semestres**: A Tayama agora sabe em qual semestre e curso você está. Quando você pede a grade do dia, ela filtra a base de dados global e exibe **apenas os professores, salas e horários da sua turma específica**.
+- **🔄 Sistema Avançado de Dependências (DPs) e Dispensas**: Pegou DP? Dispensou matéria? Sem problemas. Introduzimos os novos comandos `/adicionar_dp` e `/remover_materia`. A Tayama manipula dados estruturados em JSON direto nas colunas do MySQL para injetar disciplinas extras no seu boletim ou esconder as que você não cursa.
+- **🛠️ Painel de Administração Seguro**: Exclusivo para o desenvolvedor. Comandos como `/admin_alunos` invocam painéis (Select Menus) para editar, banir ou checar logs de usuários diretamente pelo Discord.
+- **🎵 Tayama FM (API Offline de Músicas)**: O comando `/som` foi reformulado com um banco interno contendo as melhores recomendações de *Darkwave* e *Goth Rock*, injetando no chat botões perfeitamente linkados para **Spotify, YouTube e Apple Music**.
 
 ---
 
 ## 🛠️ Funcionalidades Principais
 
-### 🎓 Gestão Acadêmica Pessoal
-- `/lancar_nota`: Adicione as notas das provas (P1, P2 e Projeto).
-- `/lancar_falta`: Contabiliza uma nova falta e a Tayama recalcula se você corre risco.
-- `/media_necessaria`: Com base nas notas já tiradas, a bot calcula exatamente os pontos que faltam para você fechar a matéria (Levando em conta os pesos da sua instituição).
-- `/boletim`: Um relatório brutal e direto do seu desempenho.
-- `/frequencia_risco`: Identifica imediatamente as matérias que você não pode mais faltar (Alerta Vermelho).
+### 🎓 Secretaria & Perfil (Integração MySQL)
+- `/meu_perfil`: Uma interface limpa que mostra seu semestre, curso, matrícula e horas complementares, equipado com um Modal de edição instantânea.
+- `/perfil_setup`: O passo inicial. Cadastre-se na base de dados e defina sua grade.
 
-### 📚 Grade de Aulas Globais
+### 📚 Aulas & Disciplinas (Filtragem Dinâmica)
+- `/materias`: Lista a ementa, horário e professor de todas as disciplinas da **sua** grade.
 - `/aulas_hoje`: Mostra a grade do dia (Horários, Sala, Professor).
-- `/disciplina`: Um *Select Menu* estilizado que retorna horários, a ementa inteira e o professor titular de uma matéria.
+- `/disciplina`: Um *Select Menu* estilizado que retorna o raio-X completo da matéria.
+- `/adicionar_dp`: Puxe uma matéria de outro semestre (ou curso) para a sua grade pessoal.
+- `/remover_materia`: Esconda matérias da qual você foi dispensado.
 
-### ⏳ Produtividade e Agilidade
-- `/api_sprints`: Acompanhamento de metas e sprints para o Projeto Integrador (Scrum/Agile).
+### 🩸 Provas, Notas & Faltas
+- `/lancar_nota`: Grave suas pontuações de P1, P2 ou Projeto no banco.
+- `/lancar_falta`: Contabilize faltas. A Tayama recalcula se você corre risco na hora.
+- `/media_necessaria`: Com base nas notas tiradas, a bot calcula matematicamente os pontos exatos que faltam para você ser aprovado.
+- `/frequencia_risco`: Identifica imediatamente as matérias que você não pode mais faltar (Alerta Vermelho).
+- `/boletim`: Um relatório brutal e direto do seu desempenho.
+
+### ⏳ Produtividade & Agilidade
+- `/api_sprints`: Acompanhamento de metas para o Projeto Integrador (Scrum/Agile).
 - `/registrar_estudo` & `/estudo_resumo`: Trackeamento de horas. Acompanhe quantas madrugadas você já gastou focando num projeto específico.
 
 ### 🖤 Tayama Corner
-- `/pausa`: Quotes da Tayama para te lembrar que compilar café no cérebro 24 horas por dia não faz bem.
+- `/pausa`: Quotes da Tayama para te lembrar que compilar café no cérebro 24h não faz bem.
 - `/som`: Sugestão imersiva e de alta curadoria de sons profundos pra recuperar o foco.
-- `/dica_dev`: Alertas e lições amargas sobre engenharia de software (Git, Python, Clean Code).
+- `/dica_dev`: Alertas e lições amargas sobre engenharia de software e mercado de trabalho.
+
+---
+
+## ⚙️ Arquitetura & Stack Tecnológica
+
+O projeto foi modernizado para separar responsabilidades (Lógica de Negócios vs. Interface de Usuário), garantindo um código limpo (Clean Architecture).
+
+### Backend (Bot)
+- **Linguagem**: Python 3.10+
+- **Framework Discord**: `discord.py` >= 2.3.2 (Uso extensivo de Slash Commands, Modals, Views e Autocompletes)
+- **Banco de Dados Principal**: MySQL (Tabelas relacionais: `alunos`, `notas_faltas`, `sessoes_estudo`). Utiliza colunas `JSON` dinâmicas para gerenciar DPs flexivelmente.
+- **Banco de Dados Global (Grade)**: Arquivo JSON sincronizado via `asyncio.Lock` para leituras super rápidas das informações estáticas da instituição.
+- **Lib DB**: `pymysql` integrado a um executor assíncrono do `asyncio` (`run_in_executor`) para não bloquear o Event Loop durante operações pesadas de banco de dados.
+
+### Frontend (Dashboard Website)
+- **Framework Web**: Next.js 14 (React) e TypeScript.
+- **Estilização**: Tailwind CSS, UI brutalista, paleta em tons carmesim (`#C82245`) e preto.
+- **Ícones**: Lucide Icons.
+- **Componentes**: Global Continuous Audio Player em Client Components injetados via Root Layout.
 
 ---
 
 ## 🚀 Como instalar na sua máquina?
 
-A Tayama é dividida em duas partes: O **Discord Bot** (Python) e o **Website** (Next.js).
+### 1. Preparando o Banco de Dados (MySQL)
+Crie um banco de dados vazio no seu MySQL e execute o script SQL que preparamos:
+```bash
+mysql -u root -p < database/setup.sql
+```
 
-### 1. Inicializando o Bot (Python)
+### 2. Inicializando o Bot (Python)
 
 Requisitos: Python 3.10+
 ```bash
 # Clone o repositório
-git clone https://github.com/seu-usuario/tayama-fatec-bot.git
+git clone https://github.com/pedrohl45/tayama-fatec-bot.git
 cd tayama-fatec-bot
 
 # Crie e ative um ambiente virtual
@@ -81,19 +112,26 @@ python -m venv venv
 pip install -r requirements.txt
 ```
 
-Crie um arquivo `.env` na pasta raiz e insira seu token:
+Crie um arquivo `.env` na pasta raiz:
 ```env
 DISCORD_TOKEN=seu_token_aqui
+ADMIN_DISCORD_ID=seu_id_do_discord_aqui
 SYNC_COMMANDS=true
+
+MYSQL_HOST=localhost
+MYSQL_PORT=3306
+MYSQL_USER=root
+MYSQL_PASSWORD=sua_senha
+MYSQL_DATABASE=tayama_bot
 ```
 
 Inicie o bot:
 ```bash
 python main.py
 ```
-*(Após o primeiro início, mude SYNC_COMMANDS para false para não sofrer Rate Limit do Discord nas próximas inicializações).*
+*(Após o primeiro início, mude SYNC_COMMANDS para false para não sofrer Rate Limit do Discord).*
 
-### 2. Inicializando o Website (Next.js)
+### 3. Inicializando o Website (Next.js)
 ```bash
 cd website
 
@@ -103,17 +141,7 @@ npm install
 # Suba a aplicação local
 npm run dev
 ```
-Para o Audio Player funcionar no site, basta colocar o seu arquivo `darkwave.mp3` favorito na pasta `website/public/`.
 
 ---
-
-## 🤝 Arquitetura & Stack
-
-- **Linguagem**: Python 3.10+ / TypeScript
-- **Framework Discord**: `discord.py` >= 2.3.2
-- **Front-end**: React, Next.js 14, Tailwind CSS, Lucide Icons.
-- **Banco de Dados**: JSON Isolado (Híbrido) protegido por assincronismo e cache.
-- **UI UX**: Botões Interativos (`discord.ui.Button`), Menus e Autocompletes Nativos do Discord. 
-- **Temática Visual**: Carmesim (`#C82245`), Amolado, Sombrio e Brutalista.
 
 Feito para estudantes exaustos que merecem um sistema que funciona. 🖤

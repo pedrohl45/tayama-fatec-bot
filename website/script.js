@@ -1,8 +1,12 @@
 // Inicializa os ícones do Lucide
 lucide.createIcons();
 
-// Navegação Single Page Application (SPA)
+// Navegação Single Page Application (SPA) com Rotas Virtuais
 function showPage(pageId) {
+    // Atualiza a URL sem recarregar a página
+    const newPath = pageId === 'home' ? '/' : '/' + pageId;
+    window.history.pushState({ pageId: pageId }, "", newPath);
+
     // Esconde todas as páginas
     document.querySelectorAll('.page').forEach(function(p) {
         p.classList.remove('active');
@@ -18,6 +22,26 @@ function showPage(pageId) {
     window.scrollTo(0, 0);
 }
 
+// Lida com botões de voltar/avançar do navegador
+window.addEventListener('popstate', function(e) {
+    const pageId = e.state ? e.state.pageId : 'home';
+    document.querySelectorAll('.page').forEach(p => p.classList.remove('active'));
+    document.getElementById('page-' + pageId).classList.add('active');
+});
+
+// Lê a URL atual ao carregar a página para abrir direto nos Termos ou Privacidade
+window.addEventListener('DOMContentLoaded', () => {
+    const path = window.location.pathname;
+    if (path.includes('termos')) {
+        showPage('termos');
+    } else if (path.includes('privacidade')) {
+        showPage('privacidade');
+    } else {
+        // Se for / ou qualquer outra coisa, exibe a home mas não dá pushState pra não bugar o histórico
+        document.querySelectorAll('.page').forEach(p => p.classList.remove('active'));
+        document.getElementById('page-home').classList.add('active');
+    }
+});
 // Lógica do Audio Player Contínuo
 const audio = document.getElementById('bgAudio');
 const btn = document.getElementById('audioBtn');

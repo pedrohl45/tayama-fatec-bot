@@ -1,6 +1,10 @@
 {
   "framework": null,
   "buildCommand": "echo 'Static HTML build'",
-  "outputDirectory": "."
+  "outputDirectory": ".",
+  "rewrites": [
+    { "source": "/termos", "destination": "/index.html" },
+    { "source": "/privacidade", "destination": "/index.html" }
+  ]
 }
 

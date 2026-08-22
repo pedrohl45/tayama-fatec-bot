@@ -2,8 +2,8 @@ import type { Metadata } from 'next';
 import './globals.css';
 
 export const metadata: Metadata = {
-  title: 'Tayama FATEC Bot',
-  description: 'Sua assistente acadêmica noturna para a FATEC DSM, com uma dose de sarcasmo, café e código.',
+  title: 'TayamaBot',
+  description: 'Sua assistente acadêmica noturna. Organize sua rotina, acompanhe notas e faça pausas com uma dose de sarcasmo.',
 };
 
 export default function RootLayout({

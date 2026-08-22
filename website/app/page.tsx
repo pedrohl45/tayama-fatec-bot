@@ -29,7 +29,7 @@ export default function Home() {
             Bem-vinda, Tayama.
           </h1>
           <p className="text-lg md:text-xl text-muted-foreground max-w-2xl mb-10">
-            Sua assistente acadêmica noturna para a FATEC DSM. <br className="hidden md:block" /> 
+            Sua assistente acadêmica noturna e de produtividade. <br className="hidden md:block" /> 
             Organize suas notas, acompanhe faltas e faça pausas pro café com uma dose de sarcasmo.
           </p>
           
@@ -55,7 +55,7 @@ export default function Home() {
             <div className="text-center mb-16">
               <h2 className="text-3xl font-bold mb-4">Por que a Tayama?</h2>
               <p className="text-muted-foreground max-w-2xl mx-auto">
-                A faculdade cobra caro da sua sanidade. A Tayama automatiza a papelada para você poder focar apenas no código que importa.
+                A faculdade cobra caro da sua sanidade. A Tayama automatiza a papelada para você poder focar no que importa.
               </p>
             </div>
 
@@ -67,7 +67,7 @@ export default function Home() {
                 </div>
                 <h3 className="text-xl font-bold mb-2">Controle Acadêmico</h3>
                 <p className="text-muted-foreground text-sm">
-                  Cálculo automático de notas mínimas para passar (cálculo FATEC DSM), avisos de limites de falta e grades diárias direto no chat.
+                  Cálculo automático de notas mínimas para aprovação, acompanhamento inteligente de limites de faltas e alertas diários direto no chat.
                 </p>
               </div>
 
@@ -78,7 +78,7 @@ export default function Home() {
                 </div>
                 <h3 className="text-xl font-bold mb-2">Gestão Ágil e Foco</h3>
                 <p className="text-muted-foreground text-sm">
-                  Registros de estudos, resumos por matéria e visualização de metas e Sprints para que o seu Projeto Integrador não vire um caos.
+                  Registro focado de horas de estudo e metodologias para manter seus projetos integradores e trabalhos acadêmicos sob total controle.
                 </p>
               </div>
 
@@ -89,7 +89,7 @@ export default function Home() {
                 </div>
                 <h3 className="text-xl font-bold mb-2">Pausa pro Cigarro</h3>
                 <p className="text-muted-foreground text-sm">
-                  O código quebrou? Use `/pausa` ou `/som` e deixe a Tayama indicar aquele post-punk ou dar dicas ácidas sobre a vida e a programação.
+                  Cansou de debugar a vida? Use `/pausa` ou `/som` e deixe a Tayama indicar aquele post-punk ou dar dicas ácidas para você relaxar.
                 </p>
               </div>
             </div>
@@ -100,7 +100,7 @@ export default function Home() {
         <section className="py-24 px-6 text-center">
           <h2 className="text-3xl font-bold mb-4">Pronto para organizar o caos?</h2>
           <p className="text-muted-foreground max-w-xl mx-auto mb-10">
-            Adicionar a Tayama ao seu servidor Discord é simples. Se você usa o repositório, faça o clone e ative os comandos de slash imediatamente.
+            Adicione a Tayama ao seu servidor e comece a controlar sua vida acadêmica com eficiência e estilo.
           </p>
           <a 
             href="#" 

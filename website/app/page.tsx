@@ -93,32 +93,41 @@ export default function Home() {
         <section id="tutorial" className="py-24 px-6 border-t border-[#2a2a30]">
           <div className="max-w-4xl mx-auto">
             <div className="text-center mb-16">
-              <h2 className="text-3xl font-bold mb-4 text-primary">Guia de Sobrevivência</h2>
-              <p className="text-muted-foreground">Siga estes 3 passos para não surtar no primeiro semestre.</p>
+              <h2 className="text-3xl md:text-4xl font-bold mb-4 text-primary tracking-tight">Manual de Sobrevivência</h2>
+              <p className="text-muted-foreground text-lg">Leia se quiser. Se não ler, não chore quando reprovar por falta no final do semestre.</p>
             </div>
 
             <div className="space-y-12">
-              <div className="flex flex-col md:flex-row gap-6 items-start">
-                <div className="w-12 h-12 shrink-0 bg-primary/20 text-primary rounded-full flex items-center justify-center font-bold text-xl border border-primary/50">1</div>
+              <div className="flex flex-col md:flex-row gap-6 items-start group">
+                <div className="w-14 h-14 shrink-0 bg-[#0a0a0c] text-primary rounded-xl flex items-center justify-center font-black text-2xl border border-[#2a2a30] group-hover:border-primary/50 group-hover:bg-primary/10 transition-all shadow-lg">1</div>
                 <div>
-                  <h3 className="text-2xl font-bold mb-2">Configure seu Perfil</h3>
-                  <p className="text-muted-foreground mb-4">No Discord, digite o comando <code>/perfil_setup</code> para criar seu banco de notas isolado. Depois, use <code>/materias</code> para ver as disciplinas globais da FATEC que eu já puxei para você.</p>
+                  <h3 className="text-2xl font-bold mb-3 text-foreground/90">A Burocracia Inicial</h3>
+                  <p className="text-muted-foreground leading-relaxed">
+                    A FATEC não vai adivinhar quem você é. Vá até o servidor, digite <code>/perfil_setup</code> e me deixe criar um espaço isolado no servidor para documentar os seus futuros fracassos (ou notas azuis, se você for do tipo estudioso). 
+                    Depois rode <code>/materias</code> pra encarar de frente o tamanho do problema que é a sua grade desse semestre.
+                  </p>
                 </div>
               </div>
 
-              <div className="flex flex-col md:flex-row gap-6 items-start">
-                <div className="w-12 h-12 shrink-0 bg-primary/20 text-primary rounded-full flex items-center justify-center font-bold text-xl border border-primary/50">2</div>
+              <div className="flex flex-col md:flex-row gap-6 items-start group">
+                <div className="w-14 h-14 shrink-0 bg-[#0a0a0c] text-primary rounded-xl flex items-center justify-center font-black text-2xl border border-[#2a2a30] group-hover:border-primary/50 group-hover:bg-primary/10 transition-all shadow-lg">2</div>
                 <div>
-                  <h3 className="text-2xl font-bold mb-2">Lidando com a Tragédia (Notas e Faltas)</h3>
-                  <p className="text-muted-foreground mb-4">Sempre que perder aula, digite <code>/lancar_falta</code>. Fez uma prova? Joga a nota no <code>/lancar_nota</code>. Eu faço as contas automáticas e se você digitar <code>/media_necessaria</code> eu te digo exatamente quanto você precisa tirar pra passar.</p>
+                  <h3 className="text-2xl font-bold mb-3 text-foreground/90">Controle de Danos</h3>
+                  <p className="text-muted-foreground leading-relaxed">
+                    Decidiu ficar em casa dormindo em vez de ir pra aula de Engenharia de Software? A vida é sua. Mas tenha a decência de avisar o sistema rodando <code>/lancar_falta</code>. 
+                    Pegou o resultado da prova? Registre com <code>/lancar_nota</code>. Quando o desespero bater forte em novembro, digite <code>/media_necessaria</code> e eu calculo matematicamente qual milagre você precisa realizar na P2.
+                  </p>
                 </div>
               </div>
 
-              <div className="flex flex-col md:flex-row gap-6 items-start">
-                <div className="w-12 h-12 shrink-0 bg-primary/20 text-primary rounded-full flex items-center justify-center font-bold text-xl border border-primary/50">3</div>
+              <div className="flex flex-col md:flex-row gap-6 items-start group">
+                <div className="w-14 h-14 shrink-0 bg-[#0a0a0c] text-primary rounded-xl flex items-center justify-center font-black text-2xl border border-[#2a2a30] group-hover:border-primary/50 group-hover:bg-primary/10 transition-all shadow-lg">3</div>
                 <div>
-                  <h3 className="text-2xl font-bold mb-2">Foco e Pós-Punk</h3>
-                  <p className="text-muted-foreground mb-4">A vida não é só código. Use <code>/pausa</code> para eu te mandar refletir na área de fumantes, ou <code>/som</code> para receber a melhor curadoria de Darkwave e Post-Punk para recuperar o foco no projeto integrador.</p>
+                  <h3 className="text-2xl font-bold mb-3 text-foreground/90">A Área de Fumantes</h3>
+                  <p className="text-muted-foreground leading-relaxed">
+                    Ninguém aguenta codar 12 horas seguidas num projeto integrador que nem o professor entende. 
+                    Quando sua sanidade piscar na reserva, digite <code>/som</code> que eu te receito um Post-Punk absurdo para recuperar o foco, ou roda <code>/pausa</code> para ouvir umas verdades amargas enquanto seu café esfria.
+                  </p>
                 </div>
               </div>
             </div>

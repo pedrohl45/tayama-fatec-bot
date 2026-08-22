@@ -4,6 +4,7 @@ from pathlib import Path
 
 JSON_PATH = Path(__file__).parent.parent / "alunos_data.json"
 _lock = asyncio.Lock()
+_cache = None
 
 
 def _ler_sync() -> dict:
@@ -20,19 +21,27 @@ def _salvar_sync(dados: dict) -> None:
 
 async def carregar_usuarios() -> dict:
     """Carrega o arquivo alunos_data.json."""
+    global _cache
+    if _cache is not None:
+        return _cache
     async with _lock:
         if not JSON_PATH.exists():
             await salvar_usuarios({})
             return {}
         loop = asyncio.get_event_loop()
-        return await loop.run_in_executor(None, _ler_sync)
+        _cache = await loop.run_in_executor(None, _ler_sync)
+        return _cache
 
 
 async def salvar_usuarios(dados: dict) -> None:
     """Salva o arquivo alunos_data.json."""
+    global _cache
+    if _cache is not None:
+        return _cache
     async with _lock:
         loop = asyncio.get_event_loop()
         await loop.run_in_executor(None, _salvar_sync, dados)
+        _cache = dados
 
 
 async def get_user_data(discord_id: int) -> dict:

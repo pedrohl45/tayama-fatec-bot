@@ -1,8 +1,36 @@
+'use client';
+
+import { useState, useRef, useEffect } from 'react';
 import Image from 'next/image';
-import { Terminal, GraduationCap, Clock, Music, ArrowRight, Github } from 'lucide-react';
+import { Terminal, GraduationCap, Clock, Music, ArrowRight, Github, Play, Pause, Disc } from 'lucide-react';
 
 export default function Home() {
   const INVITE_LINK = "https://discord.com/oauth2/authorize?client_id=1540221236821364788&permissions=8&scope=bot%20applications.commands";
+  
+  const [isPlaying, setIsPlaying] = useState(false);
+  const audioRef = useRef<HTMLAudioElement | null>(null);
+
+  useEffect(() => {
+    // Inicializa o áudio. O usuário precisa adicionar darkwave.mp3 na pasta public
+    audioRef.current = new Audio('/darkwave.mp3');
+    audioRef.current.loop = true;
+    audioRef.current.volume = 0.4;
+    return () => {
+      if (audioRef.current) {
+        audioRef.current.pause();
+      }
+    };
+  }, []);
+
+  const togglePlay = () => {
+    if (!audioRef.current) return;
+    if (isPlaying) {
+      audioRef.current.pause();
+    } else {
+      audioRef.current.play().catch(e => console.log("Autoplay bloqueado", e));
+    }
+    setIsPlaying(!isPlaying);
+  };
 
   return (
     <>
@@ -26,9 +54,7 @@ export default function Home() {
         <section className="flex flex-col items-center justify-center text-center py-24 px-4 min-h-[70vh]">
           
           <div className="relative mb-8 flex justify-center items-center">
-            {/* Glow vermelho animado no fundo */}
             <div className="absolute inset-0 bg-primary/30 rounded-full blur-2xl animate-pulse scale-125"></div>
-            {/* Container da Imagem */}
             <div className="relative w-48 h-48 md:w-56 md:h-56 rounded-full overflow-hidden border-4 border-primary shadow-[0_0_40px_rgba(200,34,69,0.8)] z-10">
               <Image 
                 src="/tayama.jpg" 
@@ -59,11 +85,47 @@ export default function Home() {
               Adicionar ao Discord
             </a>
             <a 
-              href="#features" 
+              href="#tutorial" 
               className="bg-card text-foreground hover:bg-card/80 border border-[#2a2a30] font-medium py-3 px-8 rounded-lg flex items-center justify-center transition-colors"
             >
-              Conhecer Funcionalidades
+              Como Começar
             </a>
+          </div>
+        </section>
+
+        {/* Tutorial Section */}
+        <section id="tutorial" className="py-24 px-6 border-t border-[#2a2a30]">
+          <div className="max-w-4xl mx-auto">
+            <div className="text-center mb-16">
+              <h2 className="text-3xl font-bold mb-4 text-primary">Guia de Sobrevivência</h2>
+              <p className="text-muted-foreground">Siga estes 3 passos para não surtar no primeiro semestre.</p>
+            </div>
+
+            <div className="space-y-12">
+              <div className="flex flex-col md:flex-row gap-6 items-start">
+                <div className="w-12 h-12 shrink-0 bg-primary/20 text-primary rounded-full flex items-center justify-center font-bold text-xl border border-primary/50">1</div>
+                <div>
+                  <h3 className="text-2xl font-bold mb-2">Configure seu Perfil</h3>
+                  <p className="text-muted-foreground mb-4">No Discord, digite o comando <code>/perfil_setup</code> para criar seu banco de notas isolado. Depois, use <code>/materias</code> para ver as disciplinas globais da FATEC que eu já puxei para você.</p>
+                </div>
+              </div>
+
+              <div className="flex flex-col md:flex-row gap-6 items-start">
+                <div className="w-12 h-12 shrink-0 bg-primary/20 text-primary rounded-full flex items-center justify-center font-bold text-xl border border-primary/50">2</div>
+                <div>
+                  <h3 className="text-2xl font-bold mb-2">Lidando com a Tragédia (Notas e Faltas)</h3>
+                  <p className="text-muted-foreground mb-4">Sempre que perder aula, digite <code>/lancar_falta</code>. Fez uma prova? Joga a nota no <code>/lancar_nota</code>. Eu faço as contas automáticas e se você digitar <code>/media_necessaria</code> eu te digo exatamente quanto você precisa tirar pra passar.</p>
+                </div>
+              </div>
+
+              <div className="flex flex-col md:flex-row gap-6 items-start">
+                <div className="w-12 h-12 shrink-0 bg-primary/20 text-primary rounded-full flex items-center justify-center font-bold text-xl border border-primary/50">3</div>
+                <div>
+                  <h3 className="text-2xl font-bold mb-2">Foco e Pós-Punk</h3>
+                  <p className="text-muted-foreground mb-4">A vida não é só código. Use <code>/pausa</code> para eu te mandar refletir na área de fumantes, ou <code>/som</code> para receber a melhor curadoria de Darkwave e Post-Punk para recuperar o foco no projeto integrador.</p>
+                </div>
+              </div>
+            </div>
           </div>
         </section>
 
@@ -115,7 +177,7 @@ export default function Home() {
         </section>
 
         {/* CTA Section */}
-        <section className="py-24 px-6 text-center">
+        <section className="py-24 px-6 text-center border-t border-[#2a2a30]">
           <h2 className="text-3xl font-bold mb-4">Pronto para organizar o caos?</h2>
           <p className="text-muted-foreground max-w-xl mx-auto mb-10">
             Adicione a Tayama ao seu servidor e comece a controlar sua vida acadêmica com eficiência e estilo.
@@ -132,7 +194,27 @@ export default function Home() {
         </section>
       </main>
 
-      <footer className="border-t border-[#2a2a30] py-8 text-center text-sm text-muted-foreground">
+      {/* Floating Audio Player */}
+      <button 
+        onClick={togglePlay}
+        className={`fixed bottom-6 right-6 z-50 flex items-center gap-3 bg-card border border-primary/50 rounded-full p-3 pr-5 shadow-[0_0_15px_rgba(200,34,69,0.3)] hover:bg-[#1a1a1e] transition-all group ${isPlaying ? 'border-primary' : ''}`}
+      >
+        <div className={`w-10 h-10 rounded-full bg-primary/20 flex items-center justify-center text-primary ${isPlaying ? 'animate-[spin_4s_linear_infinite]' : ''}`}>
+          <Disc size={20} />
+        </div>
+        <div className="flex flex-col items-start">
+          <span className="text-xs text-muted-foreground font-bold">TAYAMA FM</span>
+          <span className="text-sm font-medium flex items-center gap-2">
+            {isPlaying ? (
+              <><Pause size={14} className="text-primary"/> Pausar Goth</>
+            ) : (
+              <><Play size={14} className="text-primary"/> Tocar Darkwave</>
+            )}
+          </span>
+        </div>
+      </button>
+
+      <footer className="border-t border-[#2a2a30] py-8 text-center text-sm text-muted-foreground bg-[#0a0a0a]">
         <p>TayamaBot © 2026 - Pega leve, ninguém é de ferro.</p>
         <div className="flex justify-center gap-4 mt-4">
           <a href="#" className="hover:text-foreground transition-colors">Termos de Uso</a>

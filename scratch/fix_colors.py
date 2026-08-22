@@ -16,3 +16,4 @@ for f in glob.glob('cogs/*.py'):
         file.write(content)
         
 print('Cores e espaçamentos substituídos corretamente via Python!')
+

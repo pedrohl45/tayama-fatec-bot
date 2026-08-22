@@ -7,6 +7,7 @@ JSON_PATH = Path(__file__).parent.parent / "dados.json"
 
 # Lock global: garante que leituras e escritas nunca ocorram simultaneamente
 _lock = asyncio.Lock()
+_cache = None
 
 
 def _ler_sync() -> dict:
@@ -26,6 +27,9 @@ async def carregar_dados() -> dict:
     Carrega o dados.json de forma assíncrona, sem bloquear o event loop.
     Usa asyncio.Lock para evitar leituras durante escritas.
     """
+    global _cache
+    if _cache is not None:
+        return _cache
     async with _lock:
         if not JSON_PATH.exists():
             dados_iniciais = {
@@ -38,7 +42,8 @@ async def carregar_dados() -> dict:
             return dados_iniciais
 
         loop = asyncio.get_event_loop()
-        return await loop.run_in_executor(None, _ler_sync)
+        _cache = await loop.run_in_executor(None, _ler_sync)
+        return _cache
 
 
 async def salvar_dados(dados: dict) -> None:
@@ -46,6 +51,10 @@ async def salvar_dados(dados: dict) -> None:
     Salva o dados.json de forma assíncrona, sem bloquear o event loop.
     Usa asyncio.Lock para garantir escrita atômica (sem race condition).
     """
+    global _cache
+    if _cache is not None:
+        return _cache
     async with _lock:
         loop = asyncio.get_event_loop()
         await loop.run_in_executor(None, _salvar_sync, dados)
+        _cache = dados

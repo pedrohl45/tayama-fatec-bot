@@ -1,0 +1,116 @@
+{
+  "MIGRACAO": {
+    "aluno": {
+      "nome": "Pedro Henrique Cabral Leite",
+      "curso": "Desenvolvimento de Software Multiplataforma (DSM)",
+      "instituicao": "FATEC São José dos Campos",
+      "turno": "Manhã",
+      "semestre_ingresso": "2026/2",
+      "indice_rendimento_academico": 0.0,
+      "progresso_curso_percentual": 2.5
+    },
+    "secretaria": {
+      "status_matricula": "Matriculado",
+      "periodo_letivo_atual": "2026/2",
+      "documentacao": {
+        "historico_escolar": "Entregue e Validado",
+        "certificado_reservista": "Entregue e Validado",
+        "rg_cpf": "Entregue e Validado"
+      },
+      "avisos": [
+        {
+          "data": "2026-08-01",
+          "remetente": "Diretoria Acadêmica",
+          "assunto": "Bem-vindo ao semestre 2026/2! Fique atento aos prazos de dispensa de disciplinas."
+        }
+      ]
+    },
+    "horas_complementares": {
+      "carga_horaria_exigida": 120,
+      "carga_horaria_cumprida": 0,
+      "atividades_registradas": []
+    },
+    "estudos_foco": [],
+    "desempenho_disciplinas": {
+      "ISW031": {
+        "notas": {
+          "p1": null,
+          "p2": null,
+          "projeto": null,
+          "exame_final": null
+        },
+        "media_final": null,
+        "aulas_dadas": 12,
+        "presencas": 12,
+        "faltas": 0,
+        "frequencia_percentual": 100.0,
+        "situacao": "Cursando"
+      },
+      "ISW028": {
+        "notas": {
+          "p1": null,
+          "p2": null,
+          "projeto": null
+        },
+        "media_final": null,
+        "aulas_dadas": 12,
+        "presencas": 12,
+        "faltas": 0,
+        "frequencia_percentual": 100.0,
+        "situacao": "Cursando"
+      },
+      "IES011": {
+        "notas": {
+          "p1": null,
+          "p2": null,
+          "projeto": null
+        },
+        "media_final": null,
+        "aulas_dadas": 12,
+        "presencas": 12,
+        "faltas": 0,
+        "frequencia_percentual": 100.0,
+        "situacao": "Cursando"
+      },
+      "ISO011": {
+        "notas": {
+          "p1": null,
+          "p2": null,
+          "projeto": null
+        },
+        "media_final": null,
+        "aulas_dadas": 12,
+        "presencas": 12,
+        "faltas": 0,
+        "frequencia_percentual": 100.0,
+        "situacao": "Cursando"
+      },
+      "IAL010": {
+        "notas": {
+          "p1": null,
+          "p2": null,
+          "projeto": null
+        },
+        "media_final": null,
+        "aulas_dadas": 12,
+        "presencas": 12,
+        "faltas": 0,
+        "frequencia_percentual": 100.0,
+        "situacao": "Cursando"
+      },
+      "IBD014": {
+        "notas": {
+          "p1": null,
+          "p2": null,
+          "projeto": null
+        },
+        "media_final": null,
+        "aulas_dadas": 12,
+        "presencas": 12,
+        "faltas": 0,
+        "frequencia_percentual": 100.0,
+        "situacao": "Cursando"
+      }
+    }
+  }
+}

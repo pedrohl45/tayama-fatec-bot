@@ -4,7 +4,7 @@ import discord
 from discord import app_commands
 from discord.ext import commands
 
-from database.json_db import carregar_dados, salvar_dados
+from database.user_db import get_user_data, update_user_data
 
 logger = logging.getLogger("TayamaBot")
 
@@ -50,8 +50,8 @@ class RegistroEstudoModal(discord.ui.Modal, title="📚 Registrar Sessão de Est
         obs = self.observacao.value.strip() if self.observacao.value else None
 
         try:
-            dados = await carregar_dados()
-            focos = dados.setdefault("estudos_foco", [])
+            user_data = await get_user_data(interaction.user.id)
+            focos = user_data.setdefault("estudos_foco", [])
 
             # Acumula no registro existente ou cria um novo
             existente = next(
@@ -71,7 +71,7 @@ class RegistroEstudoModal(discord.ui.Modal, title="📚 Registrar Sessão de Est
                     novo["observacoes"] = [obs]
                 focos.append(novo)
 
-            await salvar_dados(dados)
+            await update_user_data(interaction.user.id, user_data)
 
             total = existente["tempo_registrado_minutos"] if existente else minutos
             horas, mins = divmod(total, 60)
@@ -118,8 +118,8 @@ class Estudos(commands.Cog):
     async def estudo_resumo(self, interaction: discord.Interaction):
         await interaction.response.defer(thinking=True)
         try:
-            dados = await carregar_dados()
-            focos = dados.get("estudos_foco", [])
+            user_data = await get_user_data(interaction.user.id)
+            focos = user_data.get("estudos_foco", [])
 
             embed = discord.Embed(
                 title="📈 Resumo de Foco & Estudos",

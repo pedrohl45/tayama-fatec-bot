@@ -1,7 +1,7 @@
 import discord
 from discord.ext import commands
 from discord import app_commands
-from database.json_db import carregar_dados
+from database.user_db import get_user_data
 
 class FatecAluno(commands.Cog):
     def __init__(self, bot):
@@ -10,7 +10,7 @@ class FatecAluno(commands.Cog):
     @app_commands.command(name="perfil_fatec", description="Dados da secretaria, matrícula e horas complementares.")
     async def perfil(self, interaction: discord.Interaction):
         await interaction.response.defer(thinking=True)
-        dados = await carregar_dados()
+        dados = await get_user_data(interaction.user.id)
         
         aluno = dados.get("aluno", {}) if isinstance(dados, dict) else {}
         sec = dados.get("secretaria", {}) if isinstance(dados, dict) else {}

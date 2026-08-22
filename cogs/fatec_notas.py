@@ -187,7 +187,7 @@ class FatecNotas(commands.Cog):
     async def frequencia_risco(self, interaction: discord.Interaction):
         await interaction.response.defer(thinking=True)
         try:
-            em_risco = await get_disciplinas_em_risco()
+            em_risco = await get_disciplinas_em_risco(interaction.user.id)
 
             embed = discord.Embed(
                 title="⚠️ Disciplinas com Frequência em Risco",
@@ -232,7 +232,7 @@ class FatecNotas(commands.Cog):
     async def media_necessaria(self, interaction: discord.Interaction):
         await interaction.response.defer(thinking=True)
         try:
-            disciplinas = await get_todas_disciplinas()
+            disciplinas = await get_todas_disciplinas(interaction.user.id)
             if not disciplinas:
                 await interaction.followup.send(
                     "Nenhuma disciplina cadastrada no momento.", ephemeral=True

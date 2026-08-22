@@ -44,7 +44,18 @@ class TayamaBot(commands.Bot):
         )
 
     async def setup_hook(self):
-        # 1. Carrega todos os cogs dinamicamente
+        # 1. Testa conexão com MySQL
+        try:
+            from database.mysql_db import testar_conexao
+            ok = await testar_conexao()
+            if ok:
+                logger.info("MySQL: Conexão estabelecida com sucesso!")
+            else:
+                logger.warning("MySQL: Conexão FALHOU. Comandos de perfil/notas podem não funcionar.")
+        except Exception as e:
+            logger.warning(f"MySQL: Não configurado ou erro ({e}). Configure MYSQL_* no .env")
+
+        # 2. Carrega todos os cogs dinamicamente
         for filename in sorted(os.listdir("./cogs")):
             if filename.endswith(".py") and not filename.startswith("__"):
                 cog_name = f"cogs.{filename[:-3]}"
@@ -54,7 +65,7 @@ class TayamaBot(commands.Bot):
                 except Exception as e:
                     logger.error(f"Falha ao carregar cog {cog_name}: {e}", exc_info=True)
                     
-        # 2. A Sincronização foi movida para on_ready para podermos limpar as duplicadas.
+        # 3. A Sincronização foi movida para on_ready para podermos limpar as duplicadas.
         pass
 
     async def on_ready(self):

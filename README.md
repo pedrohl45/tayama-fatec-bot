@@ -1,137 +1,119 @@
-# 🚬 Tayama FATEC Bot
+<div align="center">
+  <img src="https://raw.githubusercontent.com/pedrohl45/tayama-fatec-bot/main/website/public/tayama.jpg" width="180" style="border-radius: 50%; box-shadow: 0 0 20px rgba(200, 34, 69, 0.8);" />
+  
+  # TayamaBot
+  *A assistente noturna que organiza a sua faculdade, calcula seus riscos e gerencia a sua sanidade.*
+  <br><br>
 
-Bot de Discord desenvolvido em Python (`discord.py` 2.x) para automação e organização da rotina acadêmica do curso de **Desenvolvimento de Software Multiplataforma (FATEC São José dos Campos)**.
-
-O bot conta com carregamento modular via Cogs, interface interativa (Slash Commands, Menus de Seleção e Modals), camada de serviços dedicada e rotinas automatizadas em segundo plano, além de comandos temáticos inspirados na personagem **Tayama** (*Smoking Behind the Supermarket with You*).
-
----
-
-## ⚡ Funcionalidades
-
-### 📚 Grade de Aulas & Disciplinas
-- `/aulas_hoje [dia]`: Exibe a grade de horários, professores e salas do dia especificado.
-- `/materias`: Visão geral de todas as matérias cadastradas no semestre.
-- `/disciplina`: Menu de seleção (`Select Menu`) interativo que exibe ementa, horários, frequência e notas detalhadas de cada matéria.
-
-### 📊 Desempenho, Notas & Frequência
-- `/boletim`: Resumo de frequência percentual, total de faltas e situação de cada matéria.
-- `/avaliacoes`: Cronograma detalhado de provas, projetos e pesos avaliativos.
-- `/frequencia_risco`: Identifica matérias com frequência igual ou inferior a 75%, calculando o teto e as faltas excedentes.
-- `/media_necessaria`: Menu interativo que calcula a nota mínima necessária para aprovação (critério FATEC DSM: $P_1 \times 0.35 + P_2 \times 0.35 + \text{Projeto} \times 0.30 \ge 5.0$).
-
-### 🎓 Secretaria & Matrícula
-- `/perfil_fatec`: Exibe status da matrícula, horas complementares cumpridas/exigidas e avisos acadêmicos.
-
-### 🚀 Projeto Integrador (API / Scrum)
-- `/api_sprints`: Acompanhamento de metas, datas de início/fim e status das sprints do projeto ágil.
-
-### 📝 Prazos & Provas
-- `/provas`: Listagem direta de entregas e datas limites cadastradas.
-
-### 🧠 Gestão de Estudos & Produtividade
-- `/registrar_estudo`: Abre um formulário interativo (`Modal`) para registro de tempo dedicado por matéria com anotações opcionais.
-- `/estudo_resumo`: Relatório consolidado do tempo total acumulado em cada matéria (em horas/minutos).
-
-### 🔔 Rotinas Automáticas
-- **Lembrete Matinal de Aulas**: Envio automático da grade do dia de segunda a sexta às **07:00 (BRT)** no canal configurado (`CANAL_AVISOS_ID`).
-
-### 🖤 Tayama Corner & Eventos
-- `/pausa`: Citações e reflexões da personagem para pausas de estudo/trabalho.
-- `/som`: Recomendações musicais (Post-punk, Darkwave, Deftones, Gothic Rock).
-- `/dica_dev`: Dicas rápidas sobre Git, Python, terminal Linux e modelagem de software.
-- `/eventos`: Calendário de palestras, workshops e semanas acadêmicas.
-- `/ajuda`: Guia categorizado de todos os comandos do bot.
+  [![Python](https://img.shields.io/badge/Python-3.10+-3776AB?style=for-the-badge&logo=python&logoColor=white)](https://python.org)
+  [![Discord.py](https://img.shields.io/badge/Discord.py-2.x-5865F2?style=for-the-badge&logo=discord&logoColor=white)](https://discordpy.readthedocs.io/)
+  [![Next.js](https://img.shields.io/badge/Next.js-14+-000000?style=for-the-badge&logo=next.js&logoColor=white)](https://nextjs.org/)
+  [![Status](https://img.shields.io/badge/Status-Estável-C82245?style=for-the-badge)](#)
+</div>
 
 ---
 
-## 🛠️ Arquitetura & Tecnologias
+## 🖤 O que é a Tayama?
 
-- **Linguagem**: Python 3.10+
-- **Framework Discord**: `discord.py` >= 2.3.2 (Slash Commands / `app_commands`, `ui.Select`, `ui.Modal`, `tasks.loop`)
-- **Persistência de Dados**: JSON local não-bloqueante (`database/json_db.py`) utilizando `asyncio.Lock` para isolamento de escrita concorrente e `run_in_executor` para chamadas assíncronas.
-- **Camada de Negócio**: `services/fatec_service.py` isolando lógica de cálculos, filtros de aulas e validações de frequência.
-- **Fuso Horário**: `zoneinfo` com suporte via `tzdata` (compatível com Windows/Linux/macOS no fuso `America/Sao_Paulo`).
+Acabou o caos acadêmico, as planilhas feias e o desespero de calcular frequência no final do semestre. A **TayamaBot** é um ecossistema completo (Bot de Discord + Web Landing Page) construído para gerenciar turmas, faltas, notas e projetos de forma **automatizada, isolada por usuário e altamente responsiva**.
 
----
+Ela tem uma personalidade sarcástica, ácida e foi desenvolvida para ambientes de **Engenharia de Software (FATEC)**, mas serve perfeitamente para qualquer universitário que não aguenta mais perder prazos.
 
-## 📁 Estrutura do Projeto
-
-```text
-tayama-fatec-bot/
-├── cogs/
-│   ├── __init__.py
-│   ├── estudos.py        # Tracking e modals de estudo
-│   ├── fatec_aluno.py    # Dados de secretaria e horas complementares
-│   ├── fatec_api.py      # Sprints do Projeto Integrador
-│   ├── fatec_aulas.py    # Horários, matérias e select menu de disciplinas
-│   ├── fatec_eventos.py  # Eventos e palestras
-│   ├── fatec_notas.py    # Boletim, médias e alerta de frequência
-│   ├── fatec_provas.py   # Cronograma de provas e entregas
-│   ├── general.py        # Central de ajuda (/ajuda)
-│   ├── rotinas.py        # Task loop de lembrete matinal às 07:00
-│   └── tayama.py         # Interações temáticas da Tayama
-├── database/
-│   ├── __init__.py
-│   └── json_db.py        # I/O assíncrono e thread-safe do dados.json
-├── services/
-│   ├── __init__.py
-│   └── fatec_service.py  # Regras de negócio e cálculos acadêmicos
-├── .env.example
-├── .gitignore
-├── dados.json            # Fonte de dados acadêmicos local
-├── main.py               # Inicialização, setup_hook e carregamento de cogs
-└── requirements.txt
-```
+### 🔗 Acesse a Página Oficial (Web)
+Nosso projeto possui um site super minimalista integrado com **Audio Player (Darkwave/Post-Punk)** e guias rápidos para iniciantes. A landing page foi feita em React/Next.js.
 
 ---
 
-## 🚀 Instalação e Execução
+## ✨ O que há de novo? (Atualização 2.0)
 
-### 1. Clonar o repositório
+A arquitetura passou por uma revolução gigante para suportar escala global sem perder a identidade e velocidade:
+
+- **🔐 Banco de Dados Híbrido (Multi-usuário)**: Antes, todo mundo dividia o mesmo arquivo. Agora, através do `/perfil_setup`, a Tayama gera um contêiner virtual JSON isolado (`alunos_data.json`) para as notas e faltas **de cada estudante**. As aulas globais são lidas de um arquivo mestre.
+- **⚡ Sistema de Cache em Memória**: O disco não sofre mais. A Tayama agora carrega os bancos na RAM e otimiza a latência das mensagens em *milisegundos*.
+- **🎮 Tutorial Paginado In-App**: Criamos o comando `/tutorial`, uma View Interativa no Discord (com botões de página) que ensina os novos alunos como usarem a Tayama passo a passo.
+- **🎵 Tayama FM (API Offline de Músicas)**: O comando `/som` foi reformulado com um banco interno contendo as melhores recomendações de *Darkwave*, *Sovietwave* e *Goth Rock*, injetando no chat botões perfeitamente linkados para o **Spotify, YouTube e SoundCloud**.
+- **🧠 Autocomplete Dinâmico**: Ao usar `/lancar_nota` ou `/lancar_falta`, o Discord puxa em tempo real a grade oficial do semestre para sugerir o nome correto da disciplina.
+
+---
+
+## 🛠️ Funcionalidades Principais
+
+### 🎓 Gestão Acadêmica Pessoal
+- `/lancar_nota`: Adicione as notas das provas (P1, P2 e Projeto).
+- `/lancar_falta`: Contabiliza uma nova falta e a Tayama recalcula se você corre risco.
+- `/media_necessaria`: Com base nas notas já tiradas, a bot calcula exatamente os pontos que faltam para você fechar a matéria (Levando em conta os pesos da sua instituição).
+- `/boletim`: Um relatório brutal e direto do seu desempenho.
+- `/frequencia_risco`: Identifica imediatamente as matérias que você não pode mais faltar (Alerta Vermelho).
+
+### 📚 Grade de Aulas Globais
+- `/aulas_hoje`: Mostra a grade do dia (Horários, Sala, Professor).
+- `/disciplina`: Um *Select Menu* estilizado que retorna horários, a ementa inteira e o professor titular de uma matéria.
+
+### ⏳ Produtividade e Agilidade
+- `/api_sprints`: Acompanhamento de metas e sprints para o Projeto Integrador (Scrum/Agile).
+- `/registrar_estudo` & `/estudo_resumo`: Trackeamento de horas. Acompanhe quantas madrugadas você já gastou focando num projeto específico.
+
+### 🖤 Tayama Corner
+- `/pausa`: Quotes da Tayama para te lembrar que compilar café no cérebro 24 horas por dia não faz bem.
+- `/som`: Sugestão imersiva e de alta curadoria de sons profundos pra recuperar o foco.
+- `/dica_dev`: Alertas e lições amargas sobre engenharia de software (Git, Python, Clean Code).
+
+---
+
+## 🚀 Como instalar na sua máquina?
+
+A Tayama é dividida em duas partes: O **Discord Bot** (Python) e o **Website** (Next.js).
+
+### 1. Inicializando o Bot (Python)
+
+Requisitos: Python 3.10+
 ```bash
+# Clone o repositório
 git clone https://github.com/seu-usuario/tayama-fatec-bot.git
 cd tayama-fatec-bot
-```
 
-### 2. Criar e ativar o ambiente virtual
-
-**No Windows (PowerShell):**
-```powershell
+# Crie e ative um ambiente virtual
 python -m venv venv
-.\venv\Scripts\Activate.ps1
-```
+# Windows: .\venv\Scripts\Activate.ps1
+# Linux/Mac: source venv/bin/activate
 
-**No Linux / macOS:**
-```bash
-python3 -m venv venv
-source venv/bin/activate
-```
-
-### 3. Instalar as dependências
-```bash
+# Instale as dependências
 pip install -r requirements.txt
 ```
 
-### 4. Configurar as variáveis de ambiente
-Crie um arquivo `.env` na raiz do projeto a partir do `.env.example`:
-
+Crie um arquivo `.env` na pasta raiz e insira seu token:
 ```env
 DISCORD_TOKEN=seu_token_aqui
-GUILD_ID=seu_id_de_servidor_aqui
 SYNC_COMMANDS=true
-CANAL_AVISOS_ID=seu_id_de_canal_de_texto_aqui
 ```
 
-| Variável | Descrição |
-|---|---|
-| `DISCORD_TOKEN` | Token do bot obtido no Discord Developer Portal. |
-| `GUILD_ID` | ID numérico do servidor Discord (sem colchetes ou aspas). |
-| `SYNC_COMMANDS` | `true` para sincronizar os Slash Commands na inicialização; `false` em produção normal. |
-| `CANAL_AVISOS_ID` | *(Opcional)* ID do canal de texto para o envio das rotinas de aula matinais. |
-
-### 5. Executar o bot
+Inicie o bot:
 ```bash
 python main.py
 ```
+*(Após o primeiro início, mude SYNC_COMMANDS para false para não sofrer Rate Limit do Discord nas próximas inicializações).*
 
-> **Nota sobre sincronização de comandos:** Ao iniciar o bot pela primeira vez (ou ao cadastrar novos comandos), deixe `SYNC_COMMANDS=true`. Assim que as interações estiverem disponíveis no Discord, altere para `SYNC_COMMANDS=false` para evitar requisições desnecessárias à API do Discord a cada reinício.
+### 2. Inicializando o Website (Next.js)
+```bash
+cd website
+
+# Instale as dependências
+npm install
+
+# Suba a aplicação local
+npm run dev
+```
+Para o Audio Player funcionar no site, basta colocar o seu arquivo `darkwave.mp3` favorito na pasta `website/public/`.
+
+---
+
+## 🤝 Arquitetura & Stack
+
+- **Linguagem**: Python 3.10+ / TypeScript
+- **Framework Discord**: `discord.py` >= 2.3.2
+- **Front-end**: React, Next.js 14, Tailwind CSS, Lucide Icons.
+- **Banco de Dados**: JSON Isolado (Híbrido) protegido por assincronismo e cache.
+- **UI UX**: Botões Interativos (`discord.ui.Button`), Menus e Autocompletes Nativos do Discord. 
+- **Temática Visual**: Carmesim (`#C82245`), Amolado, Sombrio e Brutalista.
+
+Feito para estudantes exaustos que merecem um sistema que funciona. 🖤

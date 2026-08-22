@@ -45,13 +45,13 @@ export default function Home() {
         <section className="relative flex flex-col items-center justify-center text-center py-32 px-4 min-h-[85vh] overflow-hidden">
           
           {/* Fundo Supermercado */}
-          <div className="absolute inset-0 z-0 bg-[url('/supermarket.jpg')] bg-cover bg-center opacity-30 mix-blend-luminosity"></div>
+          <div className="absolute inset-0 z-0 bg-[url('/supermarket.jpg')] bg-cover bg-center opacity-40"></div>
           {/* Degradê sobre o fundo */}
           <div className="absolute inset-0 z-0 bg-gradient-to-t from-background via-background/80 to-background/30"></div>
 
           <div className="relative mb-8 flex justify-center items-center z-10">
-            <div className="absolute inset-0 bg-primary/40 rounded-full blur-3xl animate-pulse scale-150"></div>
-            <div className="relative w-64 h-64 md:w-80 md:h-80 rounded-full overflow-hidden border-4 border-primary shadow-[0_0_60px_rgba(200,34,69,0.9)]">
+            <div className="absolute inset-0 bg-primary/40 rounded-full blur-3xl animate-pulse scale-125"></div>
+            <div className="relative w-56 h-56 md:w-64 md:h-64 rounded-full overflow-hidden border-4 border-primary shadow-[0_0_50px_rgba(200,34,69,0.7)]">
               <Image 
                 src="/tayama.jpg" 
                 alt="Avatar da Tayama" 
@@ -71,7 +71,7 @@ export default function Home() {
             Organize suas notas, acompanhe faltas e faça pausas pro café com uma dose de sarcasmo.
           </p>
           
-          <div className="flex flex-col sm:flex-row gap-4">
+          <div className="relative z-10 flex flex-col sm:flex-row gap-4">
             <a 
               href={INVITE_LINK} 
               target="_blank"

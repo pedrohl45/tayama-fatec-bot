@@ -10,23 +10,13 @@ export default function Home() {
   const [isPlaying, setIsPlaying] = useState(false);
   const audioRef = useRef<HTMLAudioElement | null>(null);
 
-  useEffect(() => {
-    // Inicializa o áudio. O usuário precisa adicionar darkwave.mp3 na pasta public
-    audioRef.current = new Audio('/darkwave.mp3');
-    audioRef.current.loop = true;
-    audioRef.current.volume = 0.4;
-    return () => {
-      if (audioRef.current) {
-        audioRef.current.pause();
-      }
-    };
-  }, []);
-
   const togglePlay = () => {
     if (!audioRef.current) return;
+    
     if (isPlaying) {
       audioRef.current.pause();
     } else {
+      audioRef.current.volume = 0.4;
       audioRef.current.play().catch(e => console.log("Autoplay bloqueado", e));
     }
     setIsPlaying(!isPlaying);
@@ -195,6 +185,7 @@ export default function Home() {
       </main>
 
       {/* Floating Audio Player (Clean & Dark) */}
+      <audio ref={audioRef} src="/darkwave.mp3" loop preload="auto" />
       <button 
         onClick={togglePlay}
         className={`fixed bottom-6 right-6 z-50 flex items-center justify-center w-14 h-14 bg-background/90 backdrop-blur-md border border-[#2a2a30] rounded-full shadow-lg hover:border-primary/70 transition-all ${isPlaying ? 'border-primary shadow-[0_0_15px_rgba(200,34,69,0.4)]' : ''}`}

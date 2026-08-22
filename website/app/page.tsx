@@ -194,23 +194,14 @@ export default function Home() {
         </section>
       </main>
 
-      {/* Floating Audio Player */}
+      {/* Floating Audio Player (Clean & Dark) */}
       <button 
         onClick={togglePlay}
-        className={`fixed bottom-6 right-6 z-50 flex items-center gap-3 bg-card border border-primary/50 rounded-full p-3 pr-5 shadow-[0_0_15px_rgba(200,34,69,0.3)] hover:bg-[#1a1a1e] transition-all group ${isPlaying ? 'border-primary' : ''}`}
+        className={`fixed bottom-6 right-6 z-50 flex items-center justify-center w-14 h-14 bg-background/90 backdrop-blur-md border border-[#2a2a30] rounded-full shadow-lg hover:border-primary/70 transition-all ${isPlaying ? 'border-primary shadow-[0_0_15px_rgba(200,34,69,0.4)]' : ''}`}
+        title={isPlaying ? "Pausar" : "Tocar"}
       >
-        <div className={`w-10 h-10 rounded-full bg-primary/20 flex items-center justify-center text-primary ${isPlaying ? 'animate-[spin_4s_linear_infinite]' : ''}`}>
-          <Disc size={20} />
-        </div>
-        <div className="flex flex-col items-start">
-          <span className="text-xs text-muted-foreground font-bold">TAYAMA FM</span>
-          <span className="text-sm font-medium flex items-center gap-2">
-            {isPlaying ? (
-              <><Pause size={14} className="text-primary"/> Pausar Goth</>
-            ) : (
-              <><Play size={14} className="text-primary"/> Tocar Darkwave</>
-            )}
-          </span>
+        <div className={`text-primary flex items-center justify-center ${isPlaying ? 'animate-[spin_4s_linear_infinite]' : ''}`}>
+          <Disc size={26} />
         </div>
       </button>
 

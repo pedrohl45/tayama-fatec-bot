@@ -6,6 +6,7 @@ Os cogs apenas formatam Embeds e chamam estas funções.
 from __future__ import annotations
 
 from database.json_db import carregar_dados
+from database.user_db import get_user_data
 
 # ──────────────────────────────────────────────
 # Constantes
@@ -48,25 +49,48 @@ async def get_aulas_do_dia(dia: str) -> list[dict]:
     return resultado
 
 
-async def get_todas_disciplinas() -> list[dict]:
-    """Retorna a lista completa de disciplinas do dados.json."""
+async def get_todas_disciplinas(discord_id: int) -> list[dict]:
+    """Retorna a lista completa de disciplinas globais com o desempenho injetado."""
     dados = await carregar_dados()
-    return dados.get("disciplinas", [])
+    disciplinas = dados.get("disciplinas", [])
+    
+    user_data = await get_user_data(discord_id)
+    desempenho_db = user_data.get("desempenho_disciplinas", {})
+    
+    for disc in disciplinas:
+        codigo = disc.get("codigo")
+        desemp_aluno = desempenho_db.get(codigo, {
+            "notas": {"p1": None, "p2": None, "projeto": None},
+            "faltas": 0,
+            "situacao": "Cursando"
+        })
+        
+        carga = disc.get("carga_horaria", 80)
+        faltas = desemp_aluno.get("faltas", 0)
+        
+        # O cálculo de frequência e risco passa a ser em tempo real baseado nas faltas
+        frequencia = round(100.0 * (carga - faltas) / carga, 2) if carga > 0 else 100.0
+        
+        desemp_aluno["aulas_dadas"] = carga
+        desemp_aluno["frequencia_percentual"] = frequencia
+        
+        disc["desempenho"] = desemp_aluno
+        
+    return disciplinas
 
 
 # ──────────────────────────────────────────────
 # Frequência
 # ──────────────────────────────────────────────
 
-async def get_disciplinas_em_risco() -> list[dict]:
+async def get_disciplinas_em_risco(discord_id: int) -> list[dict]:
     """
     Retorna disciplinas com frequência <= LIMITE_FREQUENCIA (75%).
-    Cada item: {nome, codigo, frequencia, faltas, aulas_dadas, faltas_max_permitidas}
     """
-    dados = await carregar_dados()
+    disciplinas = await get_todas_disciplinas(discord_id)
     em_risco: list[dict] = []
 
-    for disc in dados.get("disciplinas", []):
+    for disc in disciplinas:
         desemp = disc.get("desempenho", {})
         freq = desemp.get("frequencia_percentual", 100.0)
 
@@ -94,23 +118,6 @@ async def get_disciplinas_em_risco() -> list[dict]:
 # ──────────────────────────────────────────────
 
 def calcular_media_necessaria(notas: dict) -> dict:
-    """
-    Calcula a nota mínima necessária nas avaliações restantes para aprovação.
-
-    Fórmula FATEC DSM: média = P1*0.35 + P2*0.35 + Projeto*0.30 >= 5.0
-
-    Args:
-        notas: dict com chaves 'p1', 'p2', 'projeto' (float ou None)
-
-    Returns:
-        dict com:
-          - media_parcial: soma ponderada das notas já lançadas
-          - media_final: média final calculada (se todas as notas existem)
-          - aprovado: bool (se todas as notas existem)
-          - notas_faltantes: lista de avaliações ainda não lançadas
-          - necessaria_por_avaliacao: nota necessária em cada avaliação faltante (se possível)
-          - possivel: bool — ainda é matematicamente possível atingir 5.0
-    """
     media_parcial = 0.0
     peso_ja_computado = 0.0
     notas_faltantes: list[str] = []
@@ -135,10 +142,7 @@ def calcular_media_necessaria(notas: dict) -> dict:
             "possivel": aprovado,
         }
 
-    # Peso total das avaliações ainda não lançadas
     peso_faltante = sum(PESOS[k] for k in notas_faltantes)
-
-    # Nota necessária nas avaliações restantes (assumindo mesma nota em todas)
     necessaria = (MEDIA_APROVACAO - media_parcial) / peso_faltante if peso_faltante > 0 else 0.0
     possivel = necessaria <= 10.0
 
@@ -150,4 +154,3 @@ def calcular_media_necessaria(notas: dict) -> dict:
         "necessaria_por_avaliacao": round(necessaria, 2) if possivel else None,
         "possivel": possivel,
     }
-

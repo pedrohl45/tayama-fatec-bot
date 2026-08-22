@@ -22,7 +22,6 @@ async def disciplina_autocomplete(
     for d in disciplinas:
         nome_completo = f"{d.get('codigo')} - {d.get('nome')}"
         if current.lower() in nome_completo.lower():
-            # O value será o código da disciplina para facilitar a busca no DB do aluno
             choices.append(app_commands.Choice(name=nome_completo[:100], value=d.get("codigo")))
             
         if len(choices) >= 25:
@@ -47,7 +46,6 @@ class GestaoPessoal(commands.Cog):
         try:
             user_data = await get_user_data(interaction.user.id)
             
-            # Garante que a estrutura base exista
             if "aluno" not in user_data:
                 user_data["aluno"] = {}
                 
@@ -88,7 +86,6 @@ class GestaoPessoal(commands.Cog):
     ):
         await interaction.response.defer(ephemeral=True)
         
-        # Validação da nota
         if nota < 0.0 or nota > 10.0:
             await interaction.followup.send("⚠️ A nota deve ser um valor entre 0.0 e 10.0.", ephemeral=True)
             return
@@ -96,12 +93,10 @@ class GestaoPessoal(commands.Cog):
         try:
             user_data = await get_user_data(interaction.user.id)
             
-            # Garantir a árvore do dicionário
             desempenho_db = user_data.setdefault("desempenho_disciplinas", {})
             disc_db = desempenho_db.setdefault(disciplina, {})
             notas_db = disc_db.setdefault("notas", {"p1": None, "p2": None, "projeto": None})
             
-            # Salvar a nova nota
             notas_db[avaliacao.value] = nota
             
             await update_user_data(interaction.user.id, user_data)
@@ -138,7 +133,7 @@ class GestaoPessoal(commands.Cog):
             disc_db = desempenho_db.setdefault(disciplina, {})
             
             faltas_atuais = disc_db.get("faltas", 0)
-            novas_faltas = max(0, faltas_atuais + quantidade)  # Impede faltas negativas
+            novas_faltas = max(0, faltas_atuais + quantidade)
             
             disc_db["faltas"] = novas_faltas
             

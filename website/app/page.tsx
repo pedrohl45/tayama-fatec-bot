@@ -2,6 +2,7 @@
 
 import { useState, useRef, useEffect } from 'react';
 import Image from 'next/image';
+import Link from 'next/link';
 import { Terminal, GraduationCap, Clock, Music, ArrowRight, Github, Play, Pause, Disc } from 'lucide-react';
 
 export default function Home() {
@@ -199,7 +200,7 @@ export default function Home() {
       <footer className="border-t border-[#2a2a30] py-8 text-center text-sm text-muted-foreground bg-[#0a0a0a]">
         <p>TayamaBot © 2026 - Pega leve, ninguém é de ferro.</p>
         <div className="flex justify-center gap-4 mt-4">
-          <a href="#" className="hover:text-foreground transition-colors">Termos de Uso</a>
+          <Link href="/termos" className="hover:text-foreground transition-colors">Termos de Uso</Link>
           <a href="https://github.com/pedrohl45/tayama-fatec-bot" target="_blank" rel="noopener noreferrer" className="hover:text-foreground transition-colors">GitHub</a>
         </div>
       </footer>

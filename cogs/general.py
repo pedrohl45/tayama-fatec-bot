@@ -30,18 +30,24 @@ class General(commands.Cog):
             inline=False,
         )
         embed.add_field(
-            name="📝 Provas & Avaliações",
+            name="📝 Provas, Notas & Boletim",
             value=(
-                "`/provas` — Cronograma de provas e entregas cadastradas.\n"
-                "`/avaliacoes` — Cronograma de avaliações com pesos e datas.\n"
-                "`/media_necessaria` — Calcula a nota mínima para aprovação em cada matéria.\n"
-                "`/frequencia_risco` — Lista matérias com frequência abaixo de 75%."
+                "`/boletim` — Exibe seu boletim completo de faltas e médias.\n"
+                "`/lancar_nota` — (NOVO) Lança uma nota na sua grade (P1, P2, Projeto).\n"
+                "`/lancar_falta` — (NOVO) Registra suas faltas para cálculo da FATEC.\n"
+                "`/media_necessaria` — Calcula nota mínima para passar.\n"
+                "`/frequencia_risco` — Matérias com risco de reprovação por falta.\n"
+                "`/provas` — Cronograma global de provas e entregas.\n"
+                "`/avaliacoes` — Cronograma de avaliações com pesos definidos."
             ),
             inline=False,
         )
         embed.add_field(
             name="🎓 Perfil & Secretaria",
-            value="`/perfil_fatec` — Dados da secretaria, matrícula e horas complementares.",
+            value=(
+                "`/perfil_setup` — (NOVO) Cria seu perfil isolado para gerenciamento de notas.\n"
+                "`/perfil_fatec` — Dados da secretaria e horas complementares."
+            ),
             inline=False,
         )
         embed.add_field(

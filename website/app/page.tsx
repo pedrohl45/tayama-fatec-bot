@@ -1,6 +1,9 @@
+import Image from 'next/image';
 import { Terminal, GraduationCap, Clock, Music, ArrowRight, Github } from 'lucide-react';
 
 export default function Home() {
+  const INVITE_LINK = "https://discord.com/oauth2/authorize?client_id=1540221236821364788&permissions=8&scope=bot%20applications.commands";
+
   return (
     <>
       <header className="border-b border-[#2a2a30] py-4 px-6 flex items-center justify-between bg-background/80 backdrop-blur-md sticky top-0 z-50">
@@ -21,8 +24,15 @@ export default function Home() {
       <main className="flex-1">
         {/* Hero Section */}
         <section className="flex flex-col items-center justify-center text-center py-24 px-4 min-h-[70vh]">
-          <div className="w-20 h-20 bg-primary/20 rounded-full flex items-center justify-center mb-6 border border-primary/30">
-            <Terminal size={40} className="text-primary" />
+          
+          <div className="w-32 h-32 rounded-full overflow-hidden mb-6 border-2 border-primary shadow-[0_0_30px_rgba(200,34,69,0.4)] relative">
+            <Image 
+              src="/tayama.jpg" 
+              alt="Avatar da Tayama" 
+              fill
+              className="object-cover"
+              priority
+            />
           </div>
           
           <h1 className="text-4xl md:text-6xl font-bold mb-4 tracking-tight">
@@ -35,8 +45,10 @@ export default function Home() {
           
           <div className="flex flex-col sm:flex-row gap-4">
             <a 
-              href="#" 
-              className="bg-primary text-primary-foreground hover:bg-primary/90 font-bold py-3 px-8 rounded-lg flex items-center gap-2 transition-all shadow-[0_0_20px_rgba(225,29,72,0.3)]"
+              href={INVITE_LINK} 
+              target="_blank"
+              rel="noopener noreferrer"
+              className="bg-primary text-primary-foreground hover:bg-primary/90 font-bold py-3 px-8 rounded-lg flex items-center justify-center gap-2 transition-all shadow-[0_0_20px_rgba(200,34,69,0.3)]"
             >
               Adicionar ao Discord
             </a>
@@ -103,8 +115,10 @@ export default function Home() {
             Adicione a Tayama ao seu servidor e comece a controlar sua vida acadêmica com eficiência e estilo.
           </p>
           <a 
-            href="#" 
-            className="inline-flex items-center gap-2 bg-card border border-primary text-primary hover:bg-primary hover:text-primary-foreground font-bold py-3 px-8 rounded-lg transition-all"
+            href={INVITE_LINK} 
+            target="_blank"
+            rel="noopener noreferrer"
+            className="inline-flex items-center justify-center gap-2 bg-card border border-primary text-primary hover:bg-primary hover:text-primary-foreground font-bold py-3 px-8 rounded-lg transition-all"
           >
             Convide a Tayama
             <ArrowRight size={18} />
@@ -116,10 +130,9 @@ export default function Home() {
         <p>TayamaBot © 2026 - Pega leve, ninguém é de ferro.</p>
         <div className="flex justify-center gap-4 mt-4">
           <a href="#" className="hover:text-foreground transition-colors">Termos de Uso</a>
-          <a href="#" className="hover:text-foreground transition-colors">GitHub</a>
+          <a href="https://github.com/pedrohl45/tayama-fatec-bot" target="_blank" rel="noopener noreferrer" className="hover:text-foreground transition-colors">GitHub</a>
         </div>
       </footer>
     </>
   );
 }
-

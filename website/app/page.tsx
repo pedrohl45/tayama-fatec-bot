@@ -1,27 +1,11 @@
 'use client';
 
-import { useState, useRef, useEffect } from 'react';
 import Image from 'next/image';
 import Link from 'next/link';
-import { Terminal, GraduationCap, Clock, Music, ArrowRight, Github, Play, Pause, Disc } from 'lucide-react';
+import { Terminal, GraduationCap, Clock, Music, ArrowRight, Github } from 'lucide-react';
 
 export default function Home() {
   const INVITE_LINK = "https://discord.com/oauth2/authorize?client_id=1540221236821364788&permissions=8&scope=bot%20applications.commands";
-  
-  const [isPlaying, setIsPlaying] = useState(false);
-  const audioRef = useRef<HTMLAudioElement | null>(null);
-
-  const togglePlay = () => {
-    if (!audioRef.current) return;
-    
-    if (isPlaying) {
-      audioRef.current.pause();
-    } else {
-      audioRef.current.volume = 0.4;
-      audioRef.current.play().catch(e => console.log("Autoplay bloqueado", e));
-    }
-    setIsPlaying(!isPlaying);
-  };
 
   return (
     <>
@@ -198,18 +182,6 @@ export default function Home() {
           </a>
         </section>
       </main>
-
-      {/* Floating Audio Player (Clean & Dark) */}
-      <audio ref={audioRef} src="/musica.mp3" loop preload="auto" />
-      <button 
-        onClick={togglePlay}
-        className={`fixed bottom-6 right-6 z-50 flex items-center justify-center w-14 h-14 bg-background/90 backdrop-blur-md border border-[#2a2a30] rounded-full shadow-lg hover:border-primary/70 transition-all ${isPlaying ? 'border-primary shadow-[0_0_15px_rgba(200,34,69,0.4)]' : ''}`}
-        title={isPlaying ? "Pausar" : "Tocar"}
-      >
-        <div className={`text-primary flex items-center justify-center ${isPlaying ? 'animate-[spin_4s_linear_infinite]' : ''}`}>
-          <Disc size={26} />
-        </div>
-      </button>
 
       <footer className="border-t border-[#2a2a30] py-8 text-center text-sm text-muted-foreground bg-[#0a0a0a]">
         <p>TayamaBot © 2026 - Pega leve, ninguém é de ferro.</p>

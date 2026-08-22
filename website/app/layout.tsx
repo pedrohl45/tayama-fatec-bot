@@ -1,5 +1,6 @@
 import type { Metadata } from 'next';
 import './globals.css';
+import AudioPlayer from './components/AudioPlayer';
 
 export const metadata: Metadata = {
   title: 'TayamaBot',
@@ -20,6 +21,7 @@ export default function RootLayout({
       </head>
       <body className="font-sans min-h-screen bg-background text-foreground flex flex-col">
         {children}
+        <AudioPlayer />
       </body>
     </html>
   );

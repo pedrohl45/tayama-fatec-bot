@@ -18,17 +18,27 @@ def get_tayama_content():
 # Componentes (View UI)
 # ──────────────────────────────────────────────
 class MusicButtons(discord.ui.View):
-    def __init__(self, links: dict):
+    def __init__(self, track: dict):
         super().__init__()
         
-        if links.get("spotify"):
-            self.add_item(discord.ui.Button(label="Spotify", url=links["spotify"], style=discord.ButtonStyle.link, emoji="🟢"))
+        import urllib.parse
+        nome_busca = urllib.parse.quote_plus(track.get("nome", ""))
         
-        if links.get("youtube"):
-            self.add_item(discord.ui.Button(label="YouTube", url=links["youtube"], style=discord.ButtonStyle.link, emoji="🔴"))
+        # Spotify (Link original ou busca de fallback)
+        spot_url = track.get("spotify")
+        if not spot_url:
+            spot_url = f"https://open.spotify.com/search/{nome_busca}"
+        self.add_item(discord.ui.Button(label="Spotify", url=spot_url, style=discord.ButtonStyle.link, emoji="🎵"))
+        
+        # YouTube (Link original ou busca de fallback)
+        yt_url = track.get("youtube")
+        if not yt_url:
+            yt_url = f"https://www.youtube.com/results?search_query={nome_busca}"
+        self.add_item(discord.ui.Button(label="YouTube", url=yt_url, style=discord.ButtonStyle.link, emoji="▶️"))
             
-        if links.get("soundcloud"):
-            self.add_item(discord.ui.Button(label="SoundCloud", url=links["soundcloud"], style=discord.ButtonStyle.link, emoji="☁️"))
+        # Apple Music (Sempre via busca de fallback)
+        am_url = f"https://music.apple.com/br/search?term={nome_busca}"
+        self.add_item(discord.ui.Button(label="Apple", url=am_url, style=discord.ButtonStyle.link, emoji="🍎"))
 
 
 # ──────────────────────────────────────────────

@@ -20,7 +20,7 @@
 
 Acabou o caos acadêmico, as planilhas feias e o desespero de calcular frequência no final do semestre. A **TayamaBot** é um ecossistema completo (Bot de Discord + Web Landing Page) construído para gerenciar turmas, faltas, notas e projetos de forma **automatizada, isolada por usuário e altamente responsiva**.
 
-Ela tem uma personalidade sarcástica, ácida e foi desenvolvida para ambientes de **Engenharia de Software (FATEC)**, mas serve perfeitamente para qualquer universitário que não aguenta mais perder prazos.
+Ela tem uma personalidade sarcástica, ácida e foi desenvolvida para ambientes de **Desenvolvimento de Software Multiplataforma (Fatec)**, mas serve perfeitamente para qualquer universitário que não aguenta mais perder prazos.
 
 ### 🔗 Acesse a Página Oficial (Web)
 Nosso projeto possui um site super minimalista integrado com **Audio Player Contínuo (Darkwave/Post-Punk)** e guias rápidos para iniciantes. A landing page foi feita em puro HTML/CSS/JS e a música não para de tocar mesmo quando você navega entre as páginas graças à arquitetura Single Page!

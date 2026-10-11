@@ -8,3 +8,4 @@ dados.json
 venv/
 .vscode/
 *.pyc
+alunos_data.json
